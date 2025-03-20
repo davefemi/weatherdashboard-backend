@@ -1,5 +1,5 @@
 package nl.davefemi.weatherdashboard.dto;
 
-public class AnswersDto {
+public class CheckAnswerDto {
     
 }

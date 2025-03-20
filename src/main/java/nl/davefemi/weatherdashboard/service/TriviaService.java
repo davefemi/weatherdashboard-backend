@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriBuilder;
 
+import nl.davefemi.weatherdashboard.dto.CorrectAnswersDto;
 import nl.davefemi.weatherdashboard.dto.QuestionsDto;
 
 @Service
@@ -26,6 +27,10 @@ public class TriviaService {
 
     public QuestionsDto getQuestions(){
        return new QuestionsDto();
+    }
+
+    public CorrectAnswersDto getCorrectAnswers(){
+        return new CorrectAnswersDto();
     }
 
 }
