@@ -20,7 +20,7 @@ public class TriviaController {
 
     @GetMapping("/get-questions")
     public QuestionsDto getQuestions(){
-        
+
         return new QuestionsDto();
     }
 
@@ -28,10 +28,4 @@ public class TriviaController {
     public AnswersDto getAnswers(){
         return new AnswersDto();
     }
-
-
-
-
-
-
 }
