@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Question {
+public class Weather {
 
     private String type;
     private String difficulty;

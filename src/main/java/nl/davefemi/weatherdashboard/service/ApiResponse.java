@@ -1,19 +1,21 @@
 package nl.davefemi.weatherdashboard.service;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 @Getter
 @Setter
 public class ApiResponse {
+    @Autowired
+    JsonPOJOBuilder pojo;
 
-    @JsonProperty("response_code")
-    private int responseCode;
-
-    private List<Question> results;
+    private List<Weather> results;
 
     
 }
