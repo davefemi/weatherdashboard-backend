@@ -1,58 +1,48 @@
 package nl.davefemi.weatherdashboard.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import com.fasterxml.jackson.databind.JsonNode;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import nl.davefemi.weatherdashboard.mapper.MapToDto;
 import nl.davefemi.weatherdashboard.dto.CorrectAnswersDto;
 import nl.davefemi.weatherdashboard.dto.CurrentWeatherDto;
 
 @Service
+@Component
 public class DashboardService {
-    @Autowired
-    RestTemplate restTemplate;
+    @Value("${api.key}")
+    private String apiKey;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper mapper;
 
     @Autowired
-    public DashboardService(RestTemplate restTemplate) {
+    public DashboardService(RestTemplate restTemplate, ObjectMapper mapper) {
         this.restTemplate = restTemplate;
+        this.mapper = mapper;
     }
 
-    public JsonNode getJsonFromApi(String location) {
-        String url = "https://api.weatherapi.com/v1/current.json?key=llo&q={location}&aqi=yes";
-        url = url.replace("{location}", location);
-        try {
-            // Create a new HttpClient instance
-            HttpClient client = HttpClient.newHttpClient();
-            
-            // Build the GET request
-            HttpRequest request = HttpRequest.newBuilder()
-                                             .uri(URI.create(url))
-                                             .GET()
-                                             .build();
-            
-            // Send the request and get the response as a String
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String jsonResponse = response.body();
+    public String getJsonFromApi(String location) throws MalformedURLException, URISyntaxException {
+        String url = String.format("https://api.weatherapi.com/v1/current.json?" +
+        "key=%s&q=%s&aqi=yes", apiKey, location);
+
+    
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+            throw new RuntimeException("Failed to fetch solar irradiance data");
+        }
             
             // Parse the JSON string into a JsonNode using Jackson
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(jsonResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+            return response.getBody();
     }
 
     public CurrentWeatherDto getWeather(String location){
-        MapToDto.deserialize(getJsonFromApi("amsterdam"));
+        //MapToDto.deserialize(getJsonFromApi("amsterdam"));
        return new CurrentWeatherDto();
     }
 
