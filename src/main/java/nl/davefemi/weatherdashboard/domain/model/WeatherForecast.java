@@ -1,4 +1,4 @@
 package nl.davefemi.weatherdashboard.domain.model;
 
-public class WeatherForeCast {
+public class WeatherForecast {
 }
