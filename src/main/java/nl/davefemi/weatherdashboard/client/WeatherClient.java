@@ -43,7 +43,7 @@ public class WeatherClient {
         String url = String.format(apiUrl, apiKey, location);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-            throw new RuntimeException("Failed to fetch solar irradiance data");
+            throw new RuntimeException("Failed to fetch weather data");
         }
         log.info("Response {}", response.getBody());
         JsonNode root = objectMapper.readTree(response.getBody());
