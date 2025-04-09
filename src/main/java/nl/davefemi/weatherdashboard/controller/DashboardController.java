@@ -1,25 +1,22 @@
 package nl.davefemi.weatherdashboard.controller;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.dto.WeatherDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import nl.davefemi.weatherdashboard.dto.CurrentWeatherDto;
 import org.springframework.web.bind.annotation.*;
-import nl.davefemi.weatherdashboard.service.DashboardService;
+import nl.davefemi.weatherdashboard.client.WeatherClient;
 
 @RestController
 @RequestMapping("/public/weather")
 @RequiredArgsConstructor
 public class DashboardController {
-    private final DashboardService service;
+    private final WeatherClient service;
 
     @GetMapping("/fetch-current-weather")
     public String getCurrentWeather(@PathParam("location") String location) {
-        WeatherDto dto = service.getJsonFromApi(location);
+        CurrentWeatherDto dto = service.getCurrentWeather(location);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String isDay = dto.isDay() ? "Yes" : "No";
         return """

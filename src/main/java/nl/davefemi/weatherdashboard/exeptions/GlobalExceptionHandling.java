@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.controller.exeptions;
+package nl.davefemi.weatherdashboard.exeptions;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
-import java.util.Date;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Slf4j
 @ControllerAdvice
@@ -45,7 +47,7 @@ public class GlobalExceptionHandling {
 
     private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message, HttpServletRequest request){
         return new ResponseEntity<>(new ErrorResponse(
-                new Date(),
+                Instant.now().truncatedTo(ChronoUnit.MINUTES),
                 status.value(),
                 status.getReasonPhrase(),
                 message,

@@ -1,10 +1,11 @@
-package nl.davefemi.weatherdashboard.controller.exeptions;
+package nl.davefemi.weatherdashboard.exeptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    private Date timestamp;
+    private Instant timestamp;
     private int httpStatus;
     private String httpError;
     private String message;
