@@ -2,23 +2,58 @@ package nl.davefemi.weatherdashboard.controller;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.time.format.DateTimeFormatter;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import nl.davefemi.weatherdashboard.dto.WeatherDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import nl.davefemi.weatherdashboard.service.DashboardService;
 
 @RestController
-@RequestMapping("/public/weather/{location}")
+@RequestMapping("/public/weather")
 @RequiredArgsConstructor
 public class DashboardController {
     private final DashboardService service;
 
     @GetMapping("/fetch-current-weather")
-    public String getCurrentWeather(@PathVariable("location") String location) throws MalformedURLException, URISyntaxException{
-        return service.getJsonFromApi(location);
+    public String getCurrentWeather(@PathParam("location") String location) {
+        WeatherDto dto = service.getJsonFromApi(location);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String isDay = dto.isDay() ? "Yes" : "No";
+        return """
+                <html>
+                <body>
+                    <h2>City: %s</h2>
+                    <h2>Region: %s</h2>
+                    <h2>Country: %s</h2>
+                    <h2>Timezone: %s</h2>
+                    <h2>Time: %s</h2>
+                    <h2>Is day? %s</h2>
+                    <h2>Temperature: %s °C</h2>
+                    <h2>Feels like: %s °C</h2>
+                    <h2>Weather Condition: %s</h2>
+                    <h2>Wind: %s kph</h2>
+                    <h2>Wind Direction: %s</h2>
+                    <h2>Precipitation: %s mm</h2>
+                    <h2>Clouds: %s %%</h2>
+                </body>
+                </html>
+                """.formatted(
+                dto.getCity(),
+                dto.getRegion(),
+                dto.getCountry(),
+                dto.getTimezone(),
+                dto.getLocalTime().format(formatter),
+                isDay,
+                dto.getTemperature(),
+                dto.getFeelsLike(),
+                dto.getCondition(),
+                dto.getWindKph(),
+                dto.getWindDirection(),
+                dto.getPrecipitationMM(),
+                dto.getCloudCoverage()
+        );
     }
 }
