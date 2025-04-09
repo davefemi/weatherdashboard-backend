@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.exeptions;
+package nl.davefemi.weatherdashboard.exceptions;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,10 +37,12 @@ public class GlobalExceptionHandling {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(errorException.getResponseBodyAsString());
-            JsonNode errorNode = jsonNode.has("error") ? jsonNode.get("error") : mapper.nullNode();
+            JsonNode errorNode = jsonNode.has("error")
+                    ? jsonNode.get("error")
+                    : mapper.readTree(" {\"message\": \"Unknown error\" }");
             return errorNode.has("message") ? errorNode.get("message").asText() : "Failed to get message";
         } catch (Exception e) {
-            log.error("Failed to parse JsonNode");
+            log.error("Failed to parse JsonNode", e);
         }
         return "Unknown error";
     }

@@ -88,6 +88,15 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency> -->
+		<!-- Supabase -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.2</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

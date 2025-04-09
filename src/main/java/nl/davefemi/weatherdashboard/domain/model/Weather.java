@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.service;
+package nl.davefemi.weatherdashboard.domain.model;
 
 import java.util.List;
 

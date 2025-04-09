@@ -1,24 +1,24 @@
 package nl.davefemi.weatherdashboard.controller;
 
 import java.time.format.DateTimeFormatter;
-
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.dto.CurrentWeatherDto;
+import nl.davefemi.weatherdashboard.domain.service.DashboardService;
+import nl.davefemi.weatherdashboard.dto.external.CurrentWeatherExternalDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import nl.davefemi.weatherdashboard.client.WeatherClient;
 
 @RestController
 @RequestMapping("/public/weather")
 @RequiredArgsConstructor
 public class DashboardController {
-    private final WeatherClient service;
+    private final DashboardService service;
 
     @GetMapping("/fetch-current-weather")
     public String getCurrentWeather(@PathParam("location") String location) {
-        CurrentWeatherDto dto = service.getCurrentWeather(location);
+        CurrentWeatherExternalDto dto = service.getCurrentWeather(location);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        String isDay = dto.isDay() ? "Yes" : "No";
+        String isDay = dto.getCurrent().isDay() ? "Yes" : "No";
         return """
                 <html>
                 <body>
@@ -38,19 +38,31 @@ public class DashboardController {
                 </body>
                 </html>
                 """.formatted(
-                dto.getCity(),
-                dto.getRegion(),
-                dto.getCountry(),
-                dto.getTimezone(),
-                dto.getLocalTime().format(formatter),
+                dto.getLocation().getCity(),
+                dto.getLocation().getRegion(),
+                dto.getLocation().getCountry(),
+                dto.getLocation().getTimezone(),
+                dto.getLocation().getLocalTime().format(formatter),
                 isDay,
-                dto.getTemperature(),
-                dto.getFeelsLike(),
-                dto.getCondition(),
-                dto.getWindKph(),
-                dto.getWindDirection(),
-                dto.getPrecipitationMM(),
-                dto.getCloudCoverage()
+                dto.getCurrent().getTemperature_C(),
+                dto.getCurrent().getFeelsLike_C(),
+                dto.getCurrent().getCondition().getText(),
+                dto.getCurrent().getWindKph(),
+                dto.getCurrent().getWindDirection(),
+                dto.getCurrent().getPrecipitationMM(),
+                dto.getCurrent().getCloud()
         );
+    }
+
+    @GetMapping("/fetch-forecast")
+    public String getWeatherForecast(@PathParam("location") String location){
+        ResponseEntity<String> response = service.getWeatherForecast(location).getJSon();
+        return """
+                <html>
+                <body>
+                    %s
+                </body>
+                </html>
+                """.formatted(response);
     }
 }

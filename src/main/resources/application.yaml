@@ -1,8 +1,0 @@
-api:
-    url: "https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes"
-    key: "llo"
-spring:
-    security:
-        encryption:
-            password: "zlr"
-            salt: "ewe"

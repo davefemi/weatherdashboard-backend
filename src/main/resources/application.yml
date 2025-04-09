@@ -1,0 +1,35 @@
+supabase:
+    api:
+        url: Np2
+        key: hqer
+api:
+    weatherapi:
+        key: llo
+        url:
+            current-weather: https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes
+            forecast: http://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=1&aqi=yes&alerts=no
+
+spring:
+    security:
+        encryption:
+            password: zlr
+            salt: ewe
+
+    datasource:
+        url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+        username: 8192
+        password: bskr
+        driver-class-name: org.postgresql.Driver
+        hikari:
+            data-source-properties:
+                prepareThreshold: 0
+    profiles:
+        active: default
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: false
