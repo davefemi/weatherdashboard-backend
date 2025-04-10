@@ -1,4 +1,4 @@
 package nl.davefemi.weatherdashboard.dto.response;
 
-public class WeatherForecastResponseDto {
+public class ForecastWeatherResponseDto {
 }

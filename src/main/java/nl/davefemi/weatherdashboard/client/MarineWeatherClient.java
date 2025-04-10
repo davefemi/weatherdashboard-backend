@@ -1,33 +1,25 @@
 package nl.davefemi.weatherdashboard.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.dto.external.CurrentWeatherExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.component.AirQualityExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.component.ConditionExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.component.CurrentExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.component.LocationExternalDto;
+import nl.davefemi.weatherdashboard.dto.external.MarineWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
 @Component
 @RequiredArgsConstructor
-public class CurrentWeatherClient implements ApiClient {
+public class MarineWeatherClient implements ApiClient {
     @Value("${api.weatherapi.key}")
     private String apiKey;
-    @Value("${api.weatherapi.url.current-weather}")
+    @Value("${api.weatherapi.url.marine}")
     private String apiUrl;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -35,9 +27,9 @@ public class CurrentWeatherClient implements ApiClient {
 
     @SneakyThrows
     @Override
-    public CurrentWeatherExternalDto getExternalDto(String location) {
+    public MarineWeatherExternalDto getExternalDto(String location) {
         String url = String.format(apiUrl, apiKey, location);
-        ResponseEntity<CurrentWeatherExternalDto> response = restTemplate.getForEntity(url, CurrentWeatherExternalDto.class);
+        ResponseEntity<MarineWeatherExternalDto> response = restTemplate.getForEntity(url, MarineWeatherExternalDto.class);
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
             throw new RuntimeException("Failed to fetch weather data");
         }

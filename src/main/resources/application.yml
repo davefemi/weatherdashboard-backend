@@ -7,8 +7,8 @@ api:
         key: llo
         url:
             current-weather: https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes
-            forecast: http://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=1&aqi=yes&alerts=no
-
+            forecast: https://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=1&aqi=yes&alerts=no
+            marine: https://api.weatherapi.com/v1/marine.json?key=%s&q=%s&days=7
 spring:
     security:
         encryption:

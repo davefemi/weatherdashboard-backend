@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.dto.external.interval;
+package nl.davefemi.weatherdashboard.dto.external.component;
 
 import lombok.Data;
 

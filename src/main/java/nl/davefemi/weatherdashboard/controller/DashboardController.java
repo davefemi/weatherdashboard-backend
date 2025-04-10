@@ -1,11 +1,14 @@
 package nl.davefemi.weatherdashboard.controller;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.domain.service.DashboardService;
 import nl.davefemi.weatherdashboard.dto.external.CurrentWeatherExternalDto;
-import org.springframework.http.ResponseEntity;
+import nl.davefemi.weatherdashboard.dto.external.ForecastWeatherExternalDto;
+import nl.davefemi.weatherdashboard.dto.external.MarineWeatherExternalDto;
+import nl.davefemi.weatherdashboard.dto.response.CurrentWeatherResponseDto;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class DashboardController {
     private final DashboardService service;
+    private final DateTimeFormatter dateTimeFormatter;
 
     @GetMapping("/fetch-current-weather")
     public String getCurrentWeather(@PathParam("location") String location) {
-        CurrentWeatherExternalDto dto = service.getCurrentWeather(location);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        String isDay = dto.getCurrent().isDay() ? "Yes" : "No";
+        CurrentWeatherResponseDto dto = service.getCurrentWeather(location);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String isDay = dto.getIs_day() == 1 ? "Yes" : "No";
         return """
                 <html>
                 <body>
@@ -26,6 +30,7 @@ public class DashboardController {
                     <h2>Region: %s</h2>
                     <h2>Country: %s</h2>
                     <h2>Timezone: %s</h2>
+                    <h2>Date: %s</h2>
                     <h2>Time: %s</h2>
                     <h2>Is day? %s</h2>
                     <h2>Temperature: %s °C</h2>
@@ -38,31 +43,39 @@ public class DashboardController {
                 </body>
                 </html>
                 """.formatted(
-                dto.getLocation().getCity(),
-                dto.getLocation().getRegion(),
-                dto.getLocation().getCountry(),
-                dto.getLocation().getTimezone(),
-                dto.getLocation().getLocalTime().format(formatter),
+                dto.getName(),
+                dto.getRegion(),
+                dto.getCountry(),
+                dto.getTz_id(),
+                LocalDateTime.parse(dto.getLocaltime(), dateFormatter).toLocalDate(),
+                LocalDateTime.parse(dto.getLocaltime(), dateFormatter).toLocalTime(),
                 isDay,
-                dto.getCurrent().getTemperature_C(),
-                dto.getCurrent().getFeelsLike_C(),
-                dto.getCurrent().getCondition().getText(),
-                dto.getCurrent().getWindKph(),
-                dto.getCurrent().getWindDirection(),
-                dto.getCurrent().getPrecipitationMM(),
-                dto.getCurrent().getCloud()
+                dto.getTemp_c(),
+                dto.getFeelslike_c(),
+                dto.getCondition(),
+                dto.getWind_kph(),
+                dto.getWind_dir(),
+                dto.getPrecip_mm(),
+                dto.getCloud()
         );
     }
 
     @GetMapping("/fetch-forecast")
     public String getWeatherForecast(@PathParam("location") String location){
-        ResponseEntity<String> response = service.getWeatherForecast(location).getJSon();
+//        ResponseEntity<String> response = service.getWeatherForecast(location).getJSon();
+        ForecastWeatherExternalDto dto = service.getForecastWeather(location);
         return """
                 <html>
                 <body>
                     %s
                 </body>
                 </html>
-                """.formatted(response);
+                """.formatted(dto.getLocation().getName());
+    }
+
+    @GetMapping("/fetch-forecast-marine")
+    public String getForecastMarine(@PathParam("locatio ")String location){
+        MarineWeatherExternalDto dto = service.getForecastMarine(location);
+        return dto.toString();
     }
 }

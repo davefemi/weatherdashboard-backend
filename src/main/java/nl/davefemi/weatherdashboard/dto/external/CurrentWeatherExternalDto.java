@@ -1,8 +1,8 @@
 package nl.davefemi.weatherdashboard.dto.external;
 
 import lombok.Data;
-import nl.davefemi.weatherdashboard.dto.external.interval.CurrentExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.location.LocationExternalDto;
+import nl.davefemi.weatherdashboard.dto.external.component.CurrentExternalDto;
+import nl.davefemi.weatherdashboard.dto.external.component.LocationExternalDto;
 
 @Data
 public class CurrentWeatherExternalDto implements ExternalDto {
