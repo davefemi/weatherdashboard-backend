@@ -15,10 +15,10 @@ public interface CurrentWeatherRepository extends JpaRepository<CurrentWeatherEn
 
     @Query("SELECT c " +
             "FROM CurrentWeatherEntity c " +
-            "WHERE c.city = :location " +
-            "AND c.fetchTimestamp >= :olderThanOneHour " +
+            "WHERE LOWER(c.city) = LOWER(:location) " +
+            "AND c.fetchTimestamp >= :twentyMinutesAgo " +
             "ORDER BY c.fetchTimestamp DESC")
-    List<CurrentWeatherEntity> checkForLatestData(@Param("olderThanOneHour")
-                                                      Instant olderThanOneHour, @Param("location") String location);
+    List<CurrentWeatherEntity> checkForLatestData(@Param("twentyMinutesAgo")
+                                                      Instant twentyMinutesAgo, @Param("location") String location);
 
 }

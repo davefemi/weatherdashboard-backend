@@ -46,6 +46,12 @@ public class CurrentWeatherEntity {
     @Column(name = "condition")
     private String condition;
 
+    @Column(name = "wind_kph)")
+    private float wind_kph;
+
+    @Column(name = "wind_dir")
+    private String wind_dir;
+
     @Column(name = "precip_mm")
     private float precip_mm;
 

@@ -2,6 +2,8 @@ package nl.davefemi.weatherdashboard.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.domain.service.DashboardService;

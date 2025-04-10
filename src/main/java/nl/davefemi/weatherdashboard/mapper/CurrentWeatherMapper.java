@@ -42,6 +42,8 @@ public class CurrentWeatherMapper {
         entity.setIs_day(domain.getIs_day());
         entity.setFeelslike_c(domain.getFeelslike_c());
         entity.setCondition(domain.getCondition());
+        entity.setWind_kph(domain.getWind_kph());
+        entity.setWind_dir(domain.getWind_dir());
         entity.setPrecip_mm(domain.getPrecip_mm());
         entity.setCloud(domain.getCloud());
         return entity;
@@ -56,9 +58,12 @@ public class CurrentWeatherMapper {
         domain.setTz_id(entity.getTz_id());
         domain.setLocaltime(entity.getLocalTime());
         domain.setTemp_c(entity.getTemperatureC());
-        domain.setFeelslike_c(entity.getFeelslike_c());
         domain.setIs_day(entity.getIs_day());
+        domain.setFeelslike_c(entity.getFeelslike_c());
         domain.setCondition(entity.getCondition());
+        domain.setWind_kph(entity.getWind_kph());
+        domain.setWind_dir(entity.getWind_dir());
+        domain.setPrecip_mm(entity.getPrecip_mm());
         domain.setCloud(entity.getCloud());
         return domain;
     }

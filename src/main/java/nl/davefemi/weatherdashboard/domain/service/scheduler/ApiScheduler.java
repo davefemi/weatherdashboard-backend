@@ -21,7 +21,7 @@ public class ApiScheduler {
     private final CurrentWeatherMapper currentWeatherMapper;
     private final CurrentWeatherRepository currentWeatherRepository;
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */20 * * * *")
     public void updateCurrentWeatherData(){
         log.info("[SCHEDULED] Auto-update initialised:updating current weather data...");
         CurrentWeatherExternalDto dto =currentWeatherClient.getExternalDto("Eindhoven");

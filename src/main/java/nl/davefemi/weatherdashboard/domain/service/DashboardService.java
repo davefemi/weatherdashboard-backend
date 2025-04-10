@@ -7,6 +7,7 @@ import nl.davefemi.weatherdashboard.client.MarineWeatherClient;
 import nl.davefemi.weatherdashboard.client.ForecastWeatherClient;
 import nl.davefemi.weatherdashboard.database.entity.CurrentWeatherEntity;
 import nl.davefemi.weatherdashboard.database.repository.CurrentWeatherRepository;
+import nl.davefemi.weatherdashboard.domain.model.CurrentWeather;
 import nl.davefemi.weatherdashboard.dto.external.CurrentWeatherExternalDto;
 import nl.davefemi.weatherdashboard.dto.external.ForecastWeatherExternalDto;
 import nl.davefemi.weatherdashboard.dto.external.MarineWeatherExternalDto;
@@ -31,17 +32,17 @@ public class DashboardService {
 
     public CurrentWeatherResponseDto getCurrentWeather(String location)  {
         List<CurrentWeatherEntity> entities =
-                currentWeatherRepository.checkForLatestData(Instant.now().plusSeconds(3600), location);
+                currentWeatherRepository.checkForLatestData(Instant.now().minusSeconds(1200), location);
         if(!(entities).isEmpty()){
-            log.info("Information younger than 1 hour already exists for this query");
+            log.info("Information younger than 20 minutes already exists for this query");
             return currentWeatherMapper
                     .mapToCurrentWeatherResponseDto(currentWeatherMapper
                             .mapToCurrentWeather(entities.get(0)));
         }
-        return currentWeatherMapper
-                .mapToCurrentWeatherResponseDto(currentWeatherMapper
-                        .mapToCurrentWeather(currentWeatherClient
-                                .getExternalDto(location)));
+        CurrentWeather domain = currentWeatherMapper.mapToCurrentWeather(currentWeatherClient
+                        .getExternalDto(location));
+        currentWeatherRepository.save(currentWeatherMapper.mapToCurrentWeatherEntity(domain));
+        return currentWeatherMapper.mapToCurrentWeatherResponseDto(domain);
     }
 
     public ForecastWeatherExternalDto getForecastWeather(String location){
