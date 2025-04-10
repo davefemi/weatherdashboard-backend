@@ -36,7 +36,14 @@ public class CurrentWeatherMapper {
         entity.setCity(domain.getName());
         entity.setRegion(domain.getRegion());
         entity.setCountry(domain.getCountry());
+        entity.setTz_id(domain.getTz_id());
+        entity.setLocalTime(domain.getLocaltime());
         entity.setTemperatureC(domain.getTemp_c());
+        entity.setIs_day(domain.getIs_day());
+        entity.setFeelslike_c(domain.getFeelslike_c());
+        entity.setCondition(domain.getCondition());
+        entity.setPrecip_mm(domain.getPrecip_mm());
+        entity.setCloud(domain.getCloud());
         return entity;
     }
 
