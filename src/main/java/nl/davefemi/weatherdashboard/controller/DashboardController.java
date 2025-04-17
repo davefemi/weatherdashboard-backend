@@ -2,14 +2,14 @@ package nl.davefemi.weatherdashboard.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import nl.davefemi.weatherdashboard.client.ForecastWeatherClient;
+import nl.davefemi.weatherdashboard.domain.service.registry.ApiClientRegistry;
+import nl.davefemi.weatherdashboard.domain.service.registry.LocationRegistry;
 import nl.davefemi.weatherdashboard.domain.service.DashboardService;
-import nl.davefemi.weatherdashboard.dto.external.CurrentWeatherExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.ForecastWeatherExternalDto;
-import nl.davefemi.weatherdashboard.dto.external.MarineWeatherExternalDto;
+import nl.davefemi.weatherdashboard.domain.service.ForecastDataUpdateService;
 import nl.davefemi.weatherdashboard.dto.response.CurrentWeatherResponseDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/public/weather")
 @RequiredArgsConstructor
 public class DashboardController {
+    private final ApiClientRegistry apiClientRegistry;
+    private final LocationRegistry locationRegistry;
     private final DashboardService service;
+    private final ForecastDataUpdateService forecastDataUpdateService;
+    private final ForecastWeatherClient forecastWeatherClient;
     private final DateTimeFormatter dateTimeFormatter;
 
     @GetMapping("/fetch-current-weather")
@@ -65,19 +69,16 @@ public class DashboardController {
     @GetMapping("/fetch-forecast")
     public String getWeatherForecast(@PathParam("location") String location){
 //        ResponseEntity<String> response = service.getWeatherForecast(location).getJSon();
-        ForecastWeatherExternalDto dto = service.getForecastWeather(location);
+//        ForecastWeatherExternalDto dto = service.getForecastWeather(location);
+        forecastDataUpdateService.updateForecastData(apiClientRegistry.getApiClientDescription(forecastWeatherClient),
+                locationRegistry.getLocationDescprition(location));
         return """
                 <html>
                 <body>
                     %s
                 </body>
                 </html>
-                """.formatted(dto.getLocation().getName());
+                """.formatted("dto.getLocation().getName()");
     }
 
-    @GetMapping("/fetch-forecast-marine")
-    public String getForecastMarine(@PathParam("locatio ")String location){
-        MarineWeatherExternalDto dto = service.getForecastMarine(location);
-        return dto.toString();
-    }
 }

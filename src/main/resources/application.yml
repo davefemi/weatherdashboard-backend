@@ -4,11 +4,12 @@ supabase:
         key: hqer
 api:
     weatherapi:
+        name: weatherapi
         key: llo
         url:
             current-weather: https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes
-            forecast: https://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=1&aqi=yes&alerts=no
-            marine: https://api.weatherapi.com/v1/marine.json?key=%s&q=%s&days=7
+            forecast: https://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=7&aqi=yes&alerts=no
+
 spring:
     security:
         encryption:
@@ -26,9 +27,8 @@ spring:
     profiles:
         active: default
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
         hibernate:
-            ddl-auto: update
+            ddl-auto: validate
         show-sql: true
         properties:
             hibernate:

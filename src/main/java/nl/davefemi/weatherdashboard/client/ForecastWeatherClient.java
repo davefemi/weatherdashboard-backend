@@ -4,18 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import nl.davefemi.weatherdashboard.domain.service.registry.ApiClientInfo;
 import nl.davefemi.weatherdashboard.dto.external.ForecastWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
-@Service
 @Component
+@ApiClientInfo(name = "weatherapi", endpoint = "forecast")
 @Slf4j
 public class ForecastWeatherClient implements ApiClient {
     @Value("${api.weatherapi.key}")

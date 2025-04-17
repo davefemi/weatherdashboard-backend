@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
-public class CurrentWeather {
+public class CurrentWeatherModel {
     private Instant fetchTimestamp;
     private String name;
     private String region;

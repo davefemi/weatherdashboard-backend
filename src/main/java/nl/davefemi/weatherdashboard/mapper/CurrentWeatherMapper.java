@@ -1,7 +1,7 @@
 package nl.davefemi.weatherdashboard.mapper;
 
 import nl.davefemi.weatherdashboard.database.entity.CurrentWeatherEntity;
-import nl.davefemi.weatherdashboard.domain.model.CurrentWeather;
+import nl.davefemi.weatherdashboard.domain.model.CurrentWeatherModel;
 import nl.davefemi.weatherdashboard.dto.external.CurrentWeatherExternalDto;
 import nl.davefemi.weatherdashboard.dto.response.CurrentWeatherResponseDto;
 import org.springframework.stereotype.Component;
@@ -11,8 +11,8 @@ import java.time.Instant;
 @Component
 public class CurrentWeatherMapper {
 
-    public CurrentWeather mapToCurrentWeather(CurrentWeatherExternalDto externalDto){
-        CurrentWeather domain = new CurrentWeather();
+    public CurrentWeatherModel mapToCurrentWeather(CurrentWeatherExternalDto externalDto){
+        CurrentWeatherModel domain = new CurrentWeatherModel();
         domain.setFetchTimestamp(Instant.now());
         domain.setName(externalDto.getLocation().getName());
         domain.setRegion(externalDto.getLocation().getRegion());
@@ -30,7 +30,7 @@ public class CurrentWeatherMapper {
         return domain;
     }
 
-    public CurrentWeatherEntity mapToCurrentWeatherEntity(CurrentWeather domain){
+    public CurrentWeatherEntity mapToCurrentWeatherEntity(CurrentWeatherModel domain){
         CurrentWeatherEntity entity = new CurrentWeatherEntity();
         entity.setFetchTimestamp(domain.getFetchTimestamp());
         entity.setCity(domain.getName());
@@ -49,8 +49,8 @@ public class CurrentWeatherMapper {
         return entity;
     }
 
-    public CurrentWeather mapToCurrentWeather(CurrentWeatherEntity entity){
-        CurrentWeather domain = new CurrentWeather();
+    public CurrentWeatherModel mapToCurrentWeather(CurrentWeatherEntity entity){
+        CurrentWeatherModel domain = new CurrentWeatherModel();
         domain.setFetchTimestamp(Instant.now());
         domain.setName(entity.getCity());
         domain.setRegion(entity.getRegion());
@@ -68,7 +68,7 @@ public class CurrentWeatherMapper {
         return domain;
     }
 
-    public CurrentWeatherResponseDto mapToCurrentWeatherResponseDto(CurrentWeather domain){
+    public CurrentWeatherResponseDto mapToCurrentWeatherResponseDto(CurrentWeatherModel domain){
         CurrentWeatherResponseDto dto = new CurrentWeatherResponseDto();
         dto.setName(domain.getName());
         dto.setCountry(domain.getCountry());

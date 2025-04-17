@@ -14,7 +14,7 @@ public class CurrentWeatherEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "fetch_timestamp")
     private Instant fetchTimestamp;
