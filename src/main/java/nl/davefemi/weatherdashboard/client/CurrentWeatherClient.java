@@ -28,9 +28,15 @@ public class CurrentWeatherClient implements ApiClient {
 
     @SneakyThrows
     @Override
-    public CurrentWeatherExternalDto getExternalDto(String location) {
+    public CurrentWeatherExternalDto getExternalDto(String response) {
+        CurrentWeatherExternalDto dto = objectMapper.readValue(response, CurrentWeatherExternalDto.class);
+        return dto;
+    }
+
+    @Override
+    public String getResponseJson(String location) {
         String url = String.format(apiUrl, apiKey, location);
-        ResponseEntity<CurrentWeatherExternalDto> response = restTemplate.getForEntity(url, CurrentWeatherExternalDto.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(String.format(apiUrl, apiKey, location), String.class);
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
             throw new RuntimeException("Failed to fetch weather data");
         }

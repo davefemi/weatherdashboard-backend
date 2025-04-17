@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class AirQualityEntity {
     @Id
+    @Column(name = "realtime_weather_id")
     private Long realtimeWeatherId;
 
     @OneToOne(fetch = FetchType.EAGER)

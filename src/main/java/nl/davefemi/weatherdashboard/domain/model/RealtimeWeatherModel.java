@@ -8,8 +8,7 @@ import lombok.ToString;
 @Setter
 public class RealtimeWeatherModel {
     private long id;
-    @ToString.Exclude
-    private WeatherFetchModel weatherFetch;
+    private WeatherFetchLocationModel weatherFetchLocation;
     private long lastUpdatedEpoch;
     private float temperatureC;
     private WeatherConditionModel condition;
@@ -28,4 +27,10 @@ public class RealtimeWeatherModel {
     private float visibilityKm;
     private float uv;
     private float gustKph;
+    private AirQualityModel airQuality;
+
+    public void setAirQuality(AirQualityModel airQuality) {
+        this.airQuality = airQuality;
+        airQuality.setRealtimeWeather(this);
+    }
 }

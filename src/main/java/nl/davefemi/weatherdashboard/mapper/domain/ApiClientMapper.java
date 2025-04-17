@@ -2,6 +2,8 @@ package nl.davefemi.weatherdashboard.mapper.domain;
 
 import nl.davefemi.weatherdashboard.database.entity.ApiClientEntity;
 import nl.davefemi.weatherdashboard.domain.model.ApiClientModel;
+import nl.davefemi.weatherdashboard.domain.service.registry.ApiClientDescription;
+import nl.davefemi.weatherdashboard.domain.service.registry.LocationDescription;
 import org.springframework.stereotype.Component;
 
 @Component

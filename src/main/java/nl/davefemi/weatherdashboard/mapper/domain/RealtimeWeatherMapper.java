@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.database.entity.RealtimeWeatherEntity;
 import nl.davefemi.weatherdashboard.domain.model.RealtimeWeatherModel;
 import nl.davefemi.weatherdashboard.domain.model.WeatherConditionModel;
+import nl.davefemi.weatherdashboard.domain.model.WeatherFetchLocationModel;
 import nl.davefemi.weatherdashboard.domain.model.WeatherFetchModel;
 import nl.davefemi.weatherdashboard.dto.external.ForecastWeatherExternalDto;
 import nl.davefemi.weatherdashboard.dto.external.component.CurrentExternalDto;
@@ -13,16 +14,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RealtimeWeatherMapper {
     private final WeatherConditionMapper weatherConditionMapper;
-    private final WeatherFetchMapper weatherFetchMapper;
+    private final AirQualityMapper airQualityMapper;
+
 
     public RealtimeWeatherModel mapToModel(
-            CurrentExternalDto currentWeatherExternalDto,
-            WeatherFetchModel weatherFetchModel, WeatherConditionModel weatherConditionModel) {
+            CurrentExternalDto currentWeatherExternalDto) {
         RealtimeWeatherModel model = new RealtimeWeatherModel();
-        model.setWeatherFetch(weatherFetchModel);
         model.setLastUpdatedEpoch(currentWeatherExternalDto.getLast_updated_epoch());
         model.setTemperatureC(currentWeatherExternalDto.getTemp_c());
-        model.setCondition(weatherConditionModel);
+        model.setCondition(weatherConditionMapper.mapToModel(currentWeatherExternalDto.getCondition()));
         model.setDay(currentWeatherExternalDto.getIs_day()==1);
         model.setWindDegree(currentWeatherExternalDto.getWind_degree());
         model.setWindDirection(currentWeatherExternalDto.getWind_dir());
@@ -35,13 +35,15 @@ public class RealtimeWeatherMapper {
         model.setHeatindexC(currentWeatherExternalDto.getHeatindex_c());
         model.setVisibilityKm(currentWeatherExternalDto.getVis_km());
         model.setGustKph(currentWeatherExternalDto.getGust_kph());
+        model.setUv(currentWeatherExternalDto.getUv());
+        model.setAirQuality(airQualityMapper.mapToModel(currentWeatherExternalDto.getAir_quality()));
         return model;
     }
 
     public RealtimeWeatherModel mapToModel(RealtimeWeatherEntity realtimeWeatherEntity) {
         RealtimeWeatherModel model = new RealtimeWeatherModel();
         model.setId(realtimeWeatherEntity.getId());
-        model.setWeatherFetch(weatherFetchMapper.mapToModel(realtimeWeatherEntity.getWeatherFetch()));
+//        model.setWeatherFetchLocation(weatherFetchLocationMapper.mapToModel(realtimeWeatherEntity.getWeatherFetch()));
         model.setLastUpdatedEpoch(realtimeWeatherEntity.getLastUpdatedEpoch());
         model.setTemperatureC(realtimeWeatherEntity.getTemperatureC());
         model.setCondition(weatherConditionMapper.mapToModel(realtimeWeatherEntity.getCondition()));

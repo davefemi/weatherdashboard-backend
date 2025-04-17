@@ -67,11 +67,13 @@ public class DashboardController {
     }
 
     @GetMapping("/fetch-forecast")
-    public String getWeatherForecast(@PathParam("location") String location){
+    public String getWeatherForecast(){
 //        ResponseEntity<String> response = service.getWeatherForecast(location).getJSon();
 //        ForecastWeatherExternalDto dto = service.getForecastWeather(location);
-        forecastDataUpdateService.updateForecastData(apiClientRegistry.getApiClientDescription(forecastWeatherClient),
-                locationRegistry.getLocationDescprition(location));
+        forecastDataUpdateService.updateForecastWeatherData(
+                (ForecastWeatherClient) apiClientRegistry
+                        .getApiClientDescription(forecastWeatherClient)
+                        .getApiClient());
         return """
                 <html>
                 <body>

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.domain.service.registry.ApiClientInfo;
+import nl.davefemi.weatherdashboard.dto.external.ExternalDto;
 import nl.davefemi.weatherdashboard.dto.external.ForecastWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +29,20 @@ public class ForecastWeatherClient implements ApiClient {
 
     @SneakyThrows
     @Override
-    public ForecastWeatherExternalDto getExternalDto(String location) {
+    public ForecastWeatherExternalDto getExternalDto(String response) {
+        ForecastWeatherExternalDto dto = objectMapper.readValue(response, ForecastWeatherExternalDto.class);
+        return dto;
+    }
+
+    @Override
+    public String getResponseJson(String location){
         String url = String.format(apiUrl, apiKey, location);
-        ResponseEntity<ForecastWeatherExternalDto> response = restTemplate.getForEntity(url, ForecastWeatherExternalDto.class);
-        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+        ResponseEntity<String> responseString = restTemplate.getForEntity(url, String.class);
+        if (!responseString.getStatusCode().is2xxSuccessful() || responseString.getBody() == null) {
             throw new RuntimeException("Failed to fetch weather data");
         }
-        log.info("Response {}", response.getBody());
-        return response.getBody();
+        log.info("Response {}", responseString.getBody());
+        return responseString.getBody();
     }
 }
 

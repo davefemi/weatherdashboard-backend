@@ -1,12 +1,17 @@
 package nl.davefemi.weatherdashboard.mapper.domain;
 
+import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.database.entity.WeatherConditionEntity;
 import nl.davefemi.weatherdashboard.domain.model.WeatherConditionModel;
+import nl.davefemi.weatherdashboard.domain.service.registry.WeatherConditionRegistry;
 import nl.davefemi.weatherdashboard.dto.external.component.ConditionExternalDto;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class WeatherConditionMapper {
+    WeatherConditionRegistry weatherConditionRegistry;
+
     public WeatherConditionModel mapToModel(ConditionExternalDto weatherCondition) {
         WeatherConditionModel model = new WeatherConditionModel();
         model.setCode(weatherCondition.getCode());

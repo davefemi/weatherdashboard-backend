@@ -15,17 +15,12 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 @Component
 public class WeatherFetchMapper {
-    private final LocationMapper locationMapper;
     private final ApiClientMapper apiClientMapper;
-    private final DateTimeFormatter dateTimeFormatter;
 
-    public WeatherFetchModel mapToModel(ForecastWeatherExternalDto forecastWeatherExternalDto,
-                                        ApiClientModel apiClientModel, LocationModel locationModel ) {
+    public WeatherFetchModel mapToModel(ApiClientModel apiClientModel) {
         WeatherFetchModel model = new WeatherFetchModel();
-        model.setLocation(locationModel);
         model.setFetchTimestamp(Instant.now());
         model.setApiClient(apiClientModel);
-        model.setLocalTime(LocalDateTime.parse(forecastWeatherExternalDto.getLocation().getLocaltime(), dateTimeFormatter));
         return model;
     }
 
@@ -34,7 +29,6 @@ public class WeatherFetchMapper {
         model.setId(weatherFetchEntity.getId());
         model.setFetchTimestamp(weatherFetchEntity.getFetchTimestamp());
         model.setApiClient(apiClientMapper.mapToModel(weatherFetchEntity.getApiClient()));
-        model.setLocalTime(weatherFetchEntity.getLocalTime());
         return model;
     }
 

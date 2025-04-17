@@ -15,12 +15,11 @@ public class HourForecastMapper {
     private final WeatherFetchMapper weatherFetchMapper;
     private final ForecastDayMapper forecastDayMapper;
 
-    public HourForecastModel mapToModel (HourExternalDto hourExternalDto, ForecastDayModel forecastdayModel, WeatherConditionModel weatherConditionModel) {
+    public HourForecastModel mapToModel (HourExternalDto hourExternalDto) {
         HourForecastModel model = new HourForecastModel();
-        model.setForecastday(forecastdayModel);
         model.setTimeEpoch(hourExternalDto.getTime_epoch());
         model.setTemperatureC(hourExternalDto.getTemp_c());
-        model.setCondition(weatherConditionModel);
+        model.setCondition((weatherConditionMapper.mapToModel(hourExternalDto.getCondition())));
         model.setDay(hourExternalDto.getIs_day()==1);
         model.setWindKph(hourExternalDto.getWind_kph());
         model.setWindDegree(hourExternalDto.getWind_degree());

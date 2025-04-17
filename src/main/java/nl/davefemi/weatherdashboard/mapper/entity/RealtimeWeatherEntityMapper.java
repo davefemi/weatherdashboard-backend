@@ -4,18 +4,18 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.database.entity.RealtimeWeatherEntity;
 import nl.davefemi.weatherdashboard.domain.model.RealtimeWeatherModel;
+import nl.davefemi.weatherdashboard.mapper.domain.AirQualityMapper;
 import nl.davefemi.weatherdashboard.mapper.domain.RealtimeWeatherMapper;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class RealtimeWeatherEntityMapper {
-    private final WeatherFetchEntityMapper weatherFetchEntityMapper;
     private final WeatherConditionEntityMapper weatherConditionEntityMapper;
+    private final AirQualityEntityMapper airQualityEntityMapper;
 
     public RealtimeWeatherEntity mapToEntity(RealtimeWeatherModel realtimeWeatherModel) {
         RealtimeWeatherEntity entity = new RealtimeWeatherEntity();
-        entity.setWeatherFetch(weatherFetchEntityMapper.mapToEntity(realtimeWeatherModel.getWeatherFetch()));
         entity.setLastUpdatedEpoch(realtimeWeatherModel.getLastUpdatedEpoch());
         entity.setTemperatureC(realtimeWeatherModel.getTemperatureC());
         entity.setCondition(weatherConditionEntityMapper.mapToEntity(realtimeWeatherModel.getCondition()));
@@ -34,6 +34,7 @@ public class RealtimeWeatherEntityMapper {
         entity.setVisibilityKm(realtimeWeatherModel.getVisibilityKm());
         entity.setUv(realtimeWeatherModel.getUv());
         entity.setGustKph(realtimeWeatherModel.getGustKph());
+        entity.setAirQuality(airQualityEntityMapper.mapToEntity(realtimeWeatherModel.getAirQuality()));
         return entity;
     }
 }

@@ -13,9 +13,9 @@ public class RealtimeWeatherEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "weather_fetch_id", nullable = false)
-    private WeatherFetchEntity weatherFetch;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "weather_fetch_location_id", nullable = false)
+    private WeatherFetchLocationEntity weatherFetchLocation;
 
     // Storing epoch as a Long (could also be a BigInteger or converted to a timestamp)
     @Column(name = "last_updated_epoch")
@@ -70,5 +70,17 @@ public class RealtimeWeatherEntity {
 
     @Column(name = "gust_kph")
     private Float gustKph;
+
+    @OneToOne(mappedBy = "realtimeWeather",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER,
+            optional = false)
+    private AirQualityEntity airQuality;
+
+    public void setAirQuality(AirQualityEntity airQuality) {
+        this.airQuality = airQuality;
+        airQuality.setRealtimeWeather(this);
+    }
 }
 

@@ -3,8 +3,8 @@ package nl.davefemi.weatherdashboard.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +12,31 @@ import java.util.List;
 @Setter
 public class ForecastDayModel {
     private long id;
-    @ToString.Exclude
-    private WeatherFetchModel weatherFetch;
+    private WeatherFetchLocationModel weatherFetchLocation;
     private LocalDate forecastDate;
+    private LocalTime sunrise;
+    private LocalTime sunset;
+    private LocalTime moonrise;
+    private LocalTime moonset;
+    private Long moonIllumination;
+    private boolean isSunUp;
+    private boolean isMoonUp;
+    private float maxtemparatureC;
+    private float mintemparatureC;
+    private float avgtemparatureC;
+    private float maxwindKph;
+    private float totalprecipitationMm;
+    private float totalsnowCm;
+    private float avgvisibilityKm;
+    private long avghumdity;
+    private long chanceOfRain;
+    private long chanceOfSnow;
+    private WeatherConditionModel condition;
+    private float uv;
     private List<HourForecastModel> hourForecasts = new ArrayList<>();
-    private AstroModel astro;
-    private DailyForecastModel dailyForecast;
+
+    public void addHourForecast(HourForecastModel hourForecast) {
+        hourForecasts.add(hourForecast);
+        hourForecast.setForecastday(this);
+    }
 }

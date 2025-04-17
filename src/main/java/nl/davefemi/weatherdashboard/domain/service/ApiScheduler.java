@@ -28,12 +28,10 @@ public class ApiScheduler {
         currentWeatherDataUpdateService.updateCurrentWeatherData("Eindhoven");
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void updateForecastData(){
         Map<String, LocationDescription> locationDescriptions = locationRegistry.getLocations();
         log.info("[SCHEDULED] Auto-update initialised: updating forecast data for {}", locationDescriptions.values());
-        for (LocationDescription location : locationDescriptions.values()) {
-            forecastDataUpdateService.updateForecastData(apiClientRegistry.getApiClientDescription(forecastWeatherClient), location );
-        }
+        forecastDataUpdateService.updateForecastWeatherData((ForecastWeatherClient) apiClientRegistry.getApiClientDescription(forecastWeatherClient).getApiClient());
     }
 }

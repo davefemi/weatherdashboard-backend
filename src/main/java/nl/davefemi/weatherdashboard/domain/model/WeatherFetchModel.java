@@ -3,7 +3,6 @@ package nl.davefemi.weatherdashboard.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +10,12 @@ import java.util.List;
 @Setter
 public class WeatherFetchModel {
     private Long id;
-    private LocationModel location;
     private Instant fetchTimestamp;
     private ApiClientModel apiClient;
-    private LocalDateTime localTime;
-    private List<ForecastDayModel> forecastdays = new ArrayList<>();
+    private List<WeatherFetchLocationModel> weatherFetchLocations = new ArrayList<>();
+
+    public void addWeatherFetchLocation(WeatherFetchLocationModel weatherFetchLocation) {
+        weatherFetchLocations.add(weatherFetchLocation);
+        weatherFetchLocation.setWeatherFetch(this);
+    }
 }
