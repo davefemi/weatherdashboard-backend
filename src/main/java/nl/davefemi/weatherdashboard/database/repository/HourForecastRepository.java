@@ -1,9 +1,0 @@
-package nl.davefemi.weatherdashboard.database.repository;
-
-import nl.davefemi.weatherdashboard.database.entity.HourForecastEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface HourForecastRepository extends JpaRepository<HourForecastEntity, Long> {
-}

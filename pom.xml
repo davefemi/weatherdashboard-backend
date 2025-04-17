@@ -148,7 +148,7 @@
 							<schemaPaths>
 								<param>src/main/resources/graphql-client</param>
 							</schemaPaths>
-							<packageName>nl.davefemi.weatherdashboard.codegen</packageName>
+							<packageName>nl.davefemi.etl_weatherdashboard.codegen</packageName>
 							<addGeneratedAnnotation>true</addGeneratedAnnotation>
 							<disableDatesInGeneratedAnnotation>true</disableDatesInGeneratedAnnotation>
 						</configuration>
