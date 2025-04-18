@@ -1,26 +1,28 @@
 supabase:
     api:
-        url: Np2
-        key: hqer
+        url: ${SUPABASE_API_URL}
+        key: ${SUPABASE_API_KEY}
 api:
     weatherapi:
-        name: weatherapi
-        key: llo
+        name: ${API_WEATHERAPI_NAME}
+        key: ${API_WEATHERAPI_KEY}
         url:
-            current-weather: https://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=yes
-            forecast: https://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=7&aqi=yes&alerts=no
+            current-weather: ${API_WEATHERAPI_URL_CURRENT_WEATHER}
+            forecast: ${API_WEATHERAPI_URL_FORECAST}
 
 spring:
+    config:
+        import: "file:./.env/.env.properties"
     security:
         encryption:
-            password: zlr
-            salt: ewe
+            password: ${SPRING_SECURITY_ENCRYPTION_PASSWORD}
+            salt: ${SPRING_SECURITY_ENCRYPTION_SALT}
 
     datasource:
-        url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres
-        username: 8192
-        password: bskr
-        driver-class-name: org.postgresql.Driver
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+        driver-class-name: ${SPRING_DATASOURCE_DRIVERCLASSNAME}
         hikari:
             data-source-properties:
                 prepareThreshold: 0
