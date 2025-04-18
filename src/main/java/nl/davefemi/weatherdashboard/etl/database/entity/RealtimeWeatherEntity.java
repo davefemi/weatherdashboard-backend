@@ -10,10 +10,11 @@ import lombok.Setter;
 @Setter
 public class RealtimeWeatherEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "weather_fetch_location_id")
     private Long id;
 
     @OneToOne(optional = false)
+    @MapsId
     @JoinColumn(name = "weather_fetch_location_id", nullable = false)
     private WeatherFetchLocationEntity weatherFetchLocation;
 

@@ -2,8 +2,6 @@ package nl.davefemi.weatherdashboard.etl.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.etl.client.ForecastWeatherClient;
-import nl.davefemi.weatherdashboard.etl.domain.service.registry.ApiClientRegistry;
 import nl.davefemi.weatherdashboard.etl.domain.service.registry.LocationDescription;
 import nl.davefemi.weatherdashboard.etl.domain.service.registry.LocationRegistry;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,14 +13,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class ApiScheduler {
-    private final ForecastWeatherClient forecastWeatherClient;
-    private final ApiClientRegistry apiClientRegistry;
     private final LocationRegistry locationRegistry;
     private final ForecastDataUpdateService forecastDataUpdateService;
     private final CurrentWeatherDataUpdateService currentWeatherDataUpdateService;
 
 
-    @Scheduled(cron = "0 */20 * * * *")
+    //@Scheduled(cron = "0 */20 * * * *")
     public void updateCurrentWeatherData(){
         log.info("[SCHEDULED] Auto-update initialised:updating current weather data...");
         currentWeatherDataUpdateService.updateCurrentWeatherData("Eindhoven");
@@ -32,6 +28,6 @@ public class ApiScheduler {
     public void updateForecastData(){
         Map<String, LocationDescription> locationDescriptions = locationRegistry.getLocations();
         log.info("[SCHEDULED] Auto-update initialised: updating forecast data for {}", locationDescriptions.values());
-        forecastDataUpdateService.updateForecastWeatherData((ForecastWeatherClient) apiClientRegistry.getApiClientDescription(forecastWeatherClient).getApiClient());
+        forecastDataUpdateService.updateForecastWeatherData();
     }
 }

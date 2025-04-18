@@ -48,7 +48,7 @@ public class ForecastDataUpdateService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public void updateForecastWeatherData(ForecastWeatherClient forecastWeatherClient) {
+    public void updateForecastWeatherData() {
         WeatherFetchModel weatherFetchModel = getWeatherFetchModel();
         WeatherFetchEntity weatherFetchEntity = getWeatherFetchEntity(weatherFetchModel);
         weatherFetchRepository.save(weatherFetchEntity);
@@ -59,17 +59,17 @@ public class ForecastDataUpdateService {
         ApiClientDescription apiClientDescription = apiClientRegistry.getApiClientDescription(forecastWeatherClient);
         WeatherFetchModel weatherFetchModel = weatherFetchMapper.mapToModel(apiClientDescription.getApiClientModel());
         for (String location : locationDescriptions.keySet()) {
-            WeatherFetchLocationModel weatherFetchLocationModel = getWeatherFetchLocationModel(location, weatherFetchModel);
+            WeatherFetchLocationModel weatherFetchLocationModel = getWeatherFetchLocationModel(location);
             weatherFetchModel.addWeatherFetchLocation(weatherFetchLocationModel);
         }
         return weatherFetchModel;
     }
 
-    private WeatherFetchLocationModel getWeatherFetchLocationModel(String location, WeatherFetchModel weatherFetchModel) {
+    private WeatherFetchLocationModel getWeatherFetchLocationModel(String location) {
         String fetchResponse = forecastWeatherClient.getResponseJson(location);
         ForecastWeatherExternalDto forecastWeatherExternalDto = forecastWeatherClient.getExternalDto(fetchResponse);
         WeatherFetchLocationModel weatherFetchLocationModel;
-        JsonNode rawJsonData = null;
+        JsonNode rawJsonData;
         try {
             rawJsonData = objectMapper.readTree(fetchResponse);
         } catch (Exception e) {
@@ -80,28 +80,26 @@ public class ForecastDataUpdateService {
                         forecastWeatherExternalDto,
                         location,
                         rawJsonData);
-        weatherFetchLocationModel.setRealtimeWeather(getRealTimeWeatherModel(forecastWeatherExternalDto.getCurrent(), weatherFetchLocationModel));
+        weatherFetchLocationModel.setRealtimeWeather(getRealTimeWeatherModel(forecastWeatherExternalDto.getCurrent()));
         for (ForecastdayExternalDto forecastDayExternalDto : forecastWeatherExternalDto.getForecast().getForecastday())
-            weatherFetchLocationModel.addForecastDay(getForecastDayModel(forecastDayExternalDto, weatherFetchLocationModel));
+            weatherFetchLocationModel.addForecastDay(getForecastDayModel(forecastDayExternalDto));
         return weatherFetchLocationModel;
     }
 
-    private RealtimeWeatherModel getRealTimeWeatherModel(CurrentExternalDto currentExternalDto, WeatherFetchLocationModel weatherLocationFetchModel) {
-        RealtimeWeatherModel realtimeWeatherModel = realtimeWeatherMapper.mapToModel(currentExternalDto);
-        return realtimeWeatherModel;
+    private RealtimeWeatherModel getRealTimeWeatherModel(CurrentExternalDto currentExternalDto) {
+        return realtimeWeatherMapper.mapToModel(currentExternalDto);
     }
 
-    private ForecastDayModel getForecastDayModel(ForecastdayExternalDto forecastdayExternalDto, WeatherFetchLocationModel weatherFetchLocationModel) {
+    private ForecastDayModel getForecastDayModel(ForecastdayExternalDto forecastdayExternalDto) {
         ForecastDayModel forecastDayModel = forecastDayMapper.mapToModel(forecastdayExternalDto);
         for (HourExternalDto hourExternalDto : forecastdayExternalDto.getHour()) {
-            forecastDayModel.addHourForecast(getHourForecastModel(hourExternalDto, forecastDayModel));
+            forecastDayModel.addHourForecast(getHourForecastModel(hourExternalDto));
         }
         return forecastDayModel;
     }
 
-    private HourForecastModel getHourForecastModel(HourExternalDto hourExternalDto, ForecastDayModel forecastDayModel) {
-        HourForecastModel hourForecastModel = hourForecastMapper.mapToModel(hourExternalDto);
-        return hourForecastModel;
+    private HourForecastModel getHourForecastModel(HourExternalDto hourExternalDto) {
+        return hourForecastMapper.mapToModel(hourExternalDto);
     }
 
     private WeatherFetchEntity getWeatherFetchEntity(WeatherFetchModel weatherFetchModel) {
@@ -129,7 +127,6 @@ public class ForecastDataUpdateService {
     }
 
     private HourForecastEntity getHourForecastEntity(HourForecastModel hourForecast) {
-        HourForecastEntity hourForecastEntity = hourForecastEntityMapper.mapToEntity(hourForecast);
-        return hourForecastEntity;
+        return hourForecastEntityMapper.mapToEntity(hourForecast);
     }
 }

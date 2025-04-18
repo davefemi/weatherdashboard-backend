@@ -5,9 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.etl.client.ForecastWeatherClient;
-import nl.davefemi.weatherdashboard.etl.domain.service.registry.ApiClientRegistry;
-import nl.davefemi.weatherdashboard.etl.domain.service.registry.LocationRegistry;
 import nl.davefemi.weatherdashboard.etl.domain.service.DashboardService;
 import nl.davefemi.weatherdashboard.etl.domain.service.ForecastDataUpdateService;
 import nl.davefemi.weatherdashboard.etl.dto.response.CurrentWeatherResponseDto;
@@ -17,12 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/public/weather")
 @RequiredArgsConstructor
 public class DashboardController {
-    private final ApiClientRegistry apiClientRegistry;
-    private final LocationRegistry locationRegistry;
     private final DashboardService service;
     private final ForecastDataUpdateService forecastDataUpdateService;
-    private final ForecastWeatherClient forecastWeatherClient;
-    private final DateTimeFormatter dateTimeFormatter;
 
     @GetMapping("/fetch-current-weather")
     public String getCurrentWeather(@PathParam("location") String location) {
@@ -68,12 +61,7 @@ public class DashboardController {
 
     @GetMapping("/fetch-forecast")
     public String getWeatherForecast(){
-//        ResponseEntity<String> response = service.getWeatherForecast(location).getJSon();
-//        ForecastWeatherExternalDto dto = service.getForecastWeather(location);
-        forecastDataUpdateService.updateForecastWeatherData(
-                (ForecastWeatherClient) apiClientRegistry
-                        .getApiClientDescription(forecastWeatherClient)
-                        .getApiClient());
+        forecastDataUpdateService.updateForecastWeatherData();
         return """
                 <html>
                 <body>
