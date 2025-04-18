@@ -3,7 +3,6 @@ package nl.davefemi.weatherdashboard.etl.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.etl.domain.service.DashboardService;
 import nl.davefemi.weatherdashboard.etl.domain.service.ForecastDataUpdateService;
@@ -18,7 +17,7 @@ public class DashboardController {
     private final ForecastDataUpdateService forecastDataUpdateService;
 
     @GetMapping("/fetch-current-weather")
-    public String getCurrentWeather(@PathParam("location") String location) {
+    public String getCurrentWeather(@RequestParam("location") String location) {
         CurrentWeatherResponseDto dto = service.getCurrentWeather(location);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String isDay = dto.getIs_day() == 1 ? "Yes" : "No";

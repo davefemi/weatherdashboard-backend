@@ -18,8 +18,8 @@ public class CurrentWeatherEntity {
     @Column(name = "fetch_timestamp")
     private Instant fetchTimestamp;
 
-    @Column(name = "city")
-    private String city;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "region")
     private String region;

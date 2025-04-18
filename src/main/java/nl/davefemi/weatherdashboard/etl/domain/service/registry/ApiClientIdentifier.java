@@ -1,6 +1,5 @@
 package nl.davefemi.weatherdashboard.etl.domain.service.registry;
 
-
 import java.util.Objects;
 
 public class ApiClientIdentifier {

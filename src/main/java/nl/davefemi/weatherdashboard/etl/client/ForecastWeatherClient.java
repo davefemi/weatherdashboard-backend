@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.format.DateTimeFormatter;
-
 @RequiredArgsConstructor
 @Component
 @ApiClientInfo(name = "weatherapi", endpoint = "forecast")
@@ -22,9 +20,8 @@ public class ForecastWeatherClient implements ApiClient {
     private String apiKey;
     @Value("${api.weatherapi.url.forecast}")
     private String apiUrl;
-    private final RestTemplate restTemplate;
+    private final ApiCallHandler apiCallHandler;
     private final ObjectMapper objectMapper;
-    private final DateTimeFormatter dateTimeFormatter;
 
     @SneakyThrows
     @Override
@@ -34,14 +31,18 @@ public class ForecastWeatherClient implements ApiClient {
     }
 
     @Override
-    public String getResponseJson(String location){
+    public String getResponseJson(String location) {
         String url = String.format(apiUrl, apiKey, location);
-        ResponseEntity<String> responseString = restTemplate.getForEntity(url, String.class);
-        if (!responseString.getStatusCode().is2xxSuccessful() || responseString.getBody() == null) {
-            throw new RuntimeException("Failed to fetch weather data");
+        apiCallHandler.setApiUrl(url);
+        ResponseEntity<String> response;
+        try {
+            response = apiCallHandler.call();
+            return response.getBody();
         }
-        log.info("Response {}", responseString.getBody());
-        return responseString.getBody();
+        catch (Exception e) {
+            log.error("Failed to fetch weather data", e);
+            throw new RuntimeException("Failed to fetch weather data", e);
+        }
     }
 }
 

@@ -13,7 +13,6 @@ import java.util.Locale;
 @Component
 @RequiredArgsConstructor
 public class ForecastDayMapper {
-    private final WeatherFetchMapper weatherFetchMapper;
     private final WeatherConditionMapper weatherConditionMapper;
 
     public ForecastDayModel mapToModel(ForecastdayExternalDto forecastday) {

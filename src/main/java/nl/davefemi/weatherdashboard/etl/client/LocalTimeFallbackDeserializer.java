@@ -1,6 +1,5 @@
 package nl.davefemi.weatherdashboard.etl.client;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -12,21 +11,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Slf4j
-
 public class LocalTimeFallbackDeserializer extends JsonDeserializer<String> {
     private DateTimeFormatter localTimeFormatter;
-
 
     @PostConstruct
     public void init() {
         this.localTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
     }
 
-
     @Override
-    public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+    public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            LocalTime test = LocalTime.parse(p.getText(), localTimeFormatter);
+            LocalTime.parse(p.getText(), localTimeFormatter);
         }
         catch (Exception e) {
             log.info("Unexpected value encountered {} ", e.getMessage());

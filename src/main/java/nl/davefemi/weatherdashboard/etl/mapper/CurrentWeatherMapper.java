@@ -33,7 +33,7 @@ public class CurrentWeatherMapper {
     public CurrentWeatherEntity mapToCurrentWeatherEntity(CurrentWeatherModel domain){
         CurrentWeatherEntity entity = new CurrentWeatherEntity();
         entity.setFetchTimestamp(domain.getFetchTimestamp());
-        entity.setCity(domain.getName());
+        entity.setName(domain.getName());
         entity.setRegion(domain.getRegion());
         entity.setCountry(domain.getCountry());
         entity.setTz_id(domain.getTz_id());
@@ -52,7 +52,7 @@ public class CurrentWeatherMapper {
     public CurrentWeatherModel mapToCurrentWeather(CurrentWeatherEntity entity){
         CurrentWeatherModel domain = new CurrentWeatherModel();
         domain.setFetchTimestamp(Instant.now());
-        domain.setName(entity.getCity());
+        domain.setName(entity.getName());
         domain.setRegion(entity.getRegion());
         domain.setCountry(entity.getCountry());
         domain.setTz_id(entity.getTz_id());

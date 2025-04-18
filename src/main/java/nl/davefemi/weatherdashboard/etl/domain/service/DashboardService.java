@@ -35,7 +35,7 @@ public class DashboardService {
                             .mapToCurrentWeather(entities.getFirst()));
         }
         CurrentWeatherModel domain = currentWeatherMapper.mapToCurrentWeather(currentWeatherClient
-                        .getExternalDto(location));
+                        .getExternalDto(currentWeatherClient.getResponseJson(location)));
         currentWeatherRepository.save(currentWeatherMapper.mapToCurrentWeatherEntity(domain));
         return currentWeatherMapper.mapToCurrentWeatherResponseDto(domain);
     }
