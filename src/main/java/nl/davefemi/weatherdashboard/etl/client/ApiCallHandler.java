@@ -1,15 +1,12 @@
 package nl.davefemi.weatherdashboard.etl.client;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -29,11 +26,11 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
     HttpStatus.SERVICE_UNAVAILABLE,
     HttpStatus.GATEWAY_TIMEOUT);
     private final RestTemplate restTemplate;
+    private final Random random = new Random();
     private String apiUrl;
     private int sleepTime;
 
     public void setSleepTime(int attempts){
-        Random random = new Random();
         sleepTime = random.nextInt((int) Math.min(MAX_WAIT, BASE_DELAY * Math.pow(2, attempts)));
     }
 
@@ -43,21 +40,21 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
 
     public ResponseEntity<String> call() {
         ResponseEntity<String> response = null;
-        for (int attempts = 0; attempts< MAX_RETRIES; attempts++) {
-            log.info("Attempt {}" , attempts+1);
+        for (int attempts = 1 ; attempts <= MAX_RETRIES; attempts++) {
+            log.info("Attempt {}" , attempts);
             try {
                 response = restTemplate.getForEntity(apiUrl, String.class);
                 if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null && !response.getBody().isEmpty()) {
                     return response;
                 }
                 if (!RETRY_STATUS.contains(response.getStatusCode())) {
-                    log.warn("Fatal error code after {} attempts: " + response.getStatusCode().value(), attempts+1);
+                    log.warn("Fatal error code after {} attempts: " + response.getStatusCode().value(), attempts);
                     return response;
                 }
 
             } catch (RestClientException e) {
                 response = ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-                log.warn("Fetch failed for attempt {} due to {}", attempts+1, e.getMessage());
+                log.warn("Fetch failed for attempt {} due to {}", attempts, e.getMessage());
             }
             try {
                 setSleepTime(attempts);
