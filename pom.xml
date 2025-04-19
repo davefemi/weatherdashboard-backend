@@ -12,7 +12,7 @@
 	<artifactId>weatherdashboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>weatherdashboard</name>
-	<description>Demo project for Spring Boot</description>
+	<description>WeatherDasboardApplication</description>
 	<url/>
 	<licenses>
 		<license/>
