@@ -28,6 +28,10 @@ import nl.davefemi.weatherdashboard.etl.mapper.entity.WeatherFetchLocationEntity
 import org.springframework.stereotype.Service;
 import java.util.Map;
 
+/**
+ * Class responsible for requesting data from client class and orchestration of
+ * the persistence flow
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -41,12 +45,17 @@ public class ForecastDataUpdateService {
     private final WeatherFetchLocationEntityMapper weatherFetchLocationEntityMapper;
     private final WeatherFetchEntityMapper weatherFetchEntityMapper;
     private final HourForecastEntityMapper hourForecastEntityMapper;
+    private final JsonRawDataMapper jsonRawDataMapper;
     private final WeatherFetchRepository weatherFetchRepository;
     private final ForecastDayEntityMapper forecastDayEntityMapper;
     private final LocationRegistry locationRegistry;
     private final ApiClientRegistry apiClientRegistry;
     private final ObjectMapper objectMapper;
 
+    /**
+     * This is the main method which calls helper methods. It will obtain the high level domain model
+     * and send it for transformation to an entity which will be persisted.
+     */
     @Transactional
     public void updateForecastWeatherData() {
         WeatherFetchModel weatherFetchModel = getWeatherFetchModel();
@@ -54,6 +63,12 @@ public class ForecastDataUpdateService {
         weatherFetchRepository.save(weatherFetchEntity);
     }
 
+    /**
+     * Helper method obtaining the WeatherFetchModel which is an aggregate of fetches for different predetermined
+     * locations. It will make use of the local location and api registry to be able to correctly assign each fetch to
+     * the api and location
+     * @return WeatherFetchModel with a list of WeatherFetchLocations
+     */
     private WeatherFetchModel getWeatherFetchModel() {
         Map<String, LocationDescription> locationDescriptions = locationRegistry.getLocations();
         ApiClientDescription apiClientDescription = apiClientRegistry.getApiClientDescription(forecastWeatherClient);
@@ -65,6 +80,12 @@ public class ForecastDataUpdateService {
         return weatherFetchModel;
     }
 
+    /**
+     * Helper method obtaining the individual locational fetches and transforming them into domain models. Also responsible
+     * for passing the raw data into an individual model for persistence
+     * @param location of the fetch
+     * @return WeatherFetchModel with its attributes
+     */
     private WeatherFetchLocationModel getWeatherFetchLocationModel(String location) {
         String fetchResponse = forecastWeatherClient.getResponseJson(location);
         ForecastWeatherExternalDto forecastWeatherExternalDto = forecastWeatherClient.getExternalDto(fetchResponse);
@@ -78,16 +99,30 @@ public class ForecastDataUpdateService {
         weatherFetchLocationModel =
                 weatherFetchLocationMapper.mapToModel(
                         forecastWeatherExternalDto,
-                        location,
-                        rawJsonData);
+                        location);
         weatherFetchLocationModel.setRealtimeWeather(getRealTimeWeatherModel(forecastWeatherExternalDto.getCurrent()));
+        weatherFetchLocationModel.setJsonRawData(getJsonRawDataModel(rawJsonData));
         for (ForecastdayExternalDto forecastDayExternalDto : forecastWeatherExternalDto.getForecast().getForecastday())
             weatherFetchLocationModel.addForecastDay(getForecastDayModel(forecastDayExternalDto));
         return weatherFetchLocationModel;
     }
 
+    /**
+     * Responsible for obtaining a domain model with realtime weather data
+     * @param currentExternalDto data from Api call mapped into a respresentational strucutre
+     * @return RealTimeWeatherModel
+     */
     private RealtimeWeatherModel getRealTimeWeatherModel(CurrentExternalDto currentExternalDto) {
         return realtimeWeatherMapper.mapToModel(currentExternalDto);
+    }
+
+    /**
+     * Responsible for obtaining a domain model with raw data
+     * @param rawJsonData JsonNode from Api call
+     * @return JsonRawDataModel
+     */
+    private JsonRawDataModel getJsonRawDataModel(JsonNode rawJsonData) {
+        return jsonRawDataMapper.mapToModel(rawJsonData);
     }
 
     private ForecastDayModel getForecastDayModel(ForecastdayExternalDto forecastdayExternalDto) {

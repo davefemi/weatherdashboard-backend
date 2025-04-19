@@ -38,7 +38,7 @@ public class RealtimeWeatherMapper {
 
     public RealtimeWeatherModel mapToModel(RealtimeWeatherEntity realtimeWeatherEntity) {
         RealtimeWeatherModel model = new RealtimeWeatherModel();
-        model.setId(realtimeWeatherEntity.getId());
+        model.setWeatherFetchLocationId(realtimeWeatherEntity.getId());
 //        model.setWeatherFetchLocation(weatherFetchLocationMapper.mapToModel(realtimeWeatherEntity.getWeatherFetch()));
         model.setLastUpdatedEpoch(realtimeWeatherEntity.getLastUpdatedEpoch());
         model.setTemperatureC(realtimeWeatherEntity.getTemperatureC());

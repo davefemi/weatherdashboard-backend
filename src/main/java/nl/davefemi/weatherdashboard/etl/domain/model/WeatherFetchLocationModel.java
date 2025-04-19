@@ -1,6 +1,5 @@
 package nl.davefemi.weatherdashboard.etl.domain.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -14,9 +13,9 @@ public class WeatherFetchLocationModel {
     private WeatherFetchModel weatherFetch;
     private LocationModel location;
     private LocalDateTime localTime;
-    private JsonNode rawJsonData;
     private RealtimeWeatherModel realtimeWeather;
     private List<ForecastDayModel> forecastDays = new ArrayList<>();
+    private JsonRawDataModel jsonRawData;
 
     public void setRealtimeWeather(RealtimeWeatherModel realtimeWeather) {
         this.realtimeWeather = realtimeWeather;
@@ -26,5 +25,10 @@ public class WeatherFetchLocationModel {
     public void addForecastDay(ForecastDayModel forecastDay) {
         forecastDays.add(forecastDay);
         forecastDay.setWeatherFetchLocation(this);
+    }
+
+    public void setJsonRawData(JsonRawDataModel jsonRawData) {
+        this.jsonRawData = jsonRawData;
+        jsonRawData.setWeatherFetchLocation(this);
     }
 }

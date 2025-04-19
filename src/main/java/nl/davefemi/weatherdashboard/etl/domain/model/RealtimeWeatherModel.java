@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RealtimeWeatherModel {
-    private long id;
+    private long weatherFetchLocationId;
     private WeatherFetchLocationModel weatherFetchLocation;
     private long lastUpdatedEpoch;
     private float temperatureC;

@@ -1,8 +1,5 @@
 package nl.davefemi.weatherdashboard.etl.database.entity;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,16 +27,14 @@ public class WeatherFetchLocationEntity {
 
     private LocalDateTime localTime;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "raw_json_data", columnDefinition = "jsonb", nullable = false)
-    private JsonNode rawJsonData;
-
+    @OneToOne(mappedBy = "weatherFetchLocation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private RealtimeWeatherEntity realtimeWeather;
 
     @OneToMany(mappedBy = "weatherFetchLocation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ForecastDayEntity> forecastdays = new ArrayList<>();
 
-    @OneToOne(mappedBy = "weatherFetchLocation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private RealtimeWeatherEntity realtimeWeather;
+    @OneToOne(mappedBy ="weatherFetchLocation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private JsonRawDataEntity jsonRawData;
 
     public void setRealtimeWeather(RealtimeWeatherEntity realtimeWeather) {
         this.realtimeWeather = realtimeWeather;
@@ -49,5 +44,10 @@ public class WeatherFetchLocationEntity {
     public void addForecastDay(ForecastDayEntity forecastDay) {
         forecastdays.add(forecastDay);
         forecastDay.setWeatherFetchLocation(this);
+    }
+
+    public void setJsonRawData(JsonRawDataEntity jsonRawData) {
+        this.jsonRawData = jsonRawData;
+        jsonRawData.setWeatherFetchLocation(this);
     }
 }
