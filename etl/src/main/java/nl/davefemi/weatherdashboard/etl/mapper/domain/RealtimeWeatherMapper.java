@@ -1,9 +1,9 @@
 package nl.davefemi.weatherdashboard.etl.mapper.domain;
 
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.etl.database.entity.RealtimeWeatherEntity;
-import nl.davefemi.weatherdashboard.etl.domain.model.RealtimeWeatherModel;
-import nl.davefemi.weatherdashboard.etl.dto.external.component.CurrentExternalDto;
+import nl.davefemi.weatherdashboard.database.entity.RealtimeWeatherEntity;
+import nl.davefemi.weatherdashboard.domain.model.RealtimeWeatherModel;
+import nl.davefemi.weatherdashboard.etl.client.dto.component.CurrentExternalDto;
 import org.springframework.stereotype.Component;
 
 @Component

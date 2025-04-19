@@ -1,8 +1,8 @@
 package nl.davefemi.weatherdashboard.etl.mapper.domain;
 
-import nl.davefemi.weatherdashboard.etl.domain.service.registry.LocationDescription;
-import nl.davefemi.weatherdashboard.etl.database.entity.ContinentEntity;
-import nl.davefemi.weatherdashboard.etl.domain.model.ContinentModel;
+import nl.davefemi.weatherdashboard.etl.service.registry.LocationDescription;
+import nl.davefemi.weatherdashboard.database.entity.ContinentEntity;
+import nl.davefemi.weatherdashboard.domain.model.ContinentModel;
 import org.springframework.stereotype.Component;
 
 @Component

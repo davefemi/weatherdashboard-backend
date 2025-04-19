@@ -1,7 +1,7 @@
 package nl.davefemi.weatherdashboard.etl.mapper.domain;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import nl.davefemi.weatherdashboard.etl.domain.model.JsonRawDataModel;
+import nl.davefemi.weatherdashboard.domain.model.JsonRawDataModel;
 import org.springframework.stereotype.Component;
 
 @Component

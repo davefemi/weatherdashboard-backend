@@ -1,9 +1,8 @@
 package nl.davefemi.weatherdashboard.etl.mapper;
 
-import nl.davefemi.weatherdashboard.etl.database.entity.CurrentWeatherEntity;
-import nl.davefemi.weatherdashboard.etl.domain.model.CurrentWeatherModel;
-import nl.davefemi.weatherdashboard.etl.dto.external.CurrentWeatherExternalDto;
-import nl.davefemi.weatherdashboard.etl.dto.response.CurrentWeatherResponseDto;
+import nl.davefemi.weatherdashboard.database.entity.CurrentWeatherEntity;
+import nl.davefemi.weatherdashboard.domain.model.CurrentWeatherModel;
+import nl.davefemi.weatherdashboard.etl.client.dto.CurrentWeatherExternalDto;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -68,21 +67,4 @@ public class CurrentWeatherMapper {
         return domain;
     }
 
-    public CurrentWeatherResponseDto mapToCurrentWeatherResponseDto(CurrentWeatherModel domain){
-        CurrentWeatherResponseDto dto = new CurrentWeatherResponseDto();
-        dto.setName(domain.getName());
-        dto.setCountry(domain.getCountry());
-        dto.setRegion(domain.getRegion());
-        dto.setTz_id(domain.getTz_id());
-        dto.setLocaltime(domain.getLocaltime());
-        dto.setTemp_c(domain.getTemp_c());
-        dto.setIs_day(domain.getIs_day());
-        dto.setFeelslike_c(domain.getFeelslike_c());
-        dto.setCondition(domain.getCondition());
-        dto.setWind_kph(domain.getWind_kph());
-        dto.setWind_dir(domain.getWind_dir());
-        dto.setPrecip_mm(domain.getPrecip_mm());
-        dto.setCloud(domain.getCloud());
-        return dto;
-    }
 }

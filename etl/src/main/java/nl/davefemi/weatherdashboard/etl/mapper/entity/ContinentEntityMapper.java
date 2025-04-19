@@ -1,7 +1,7 @@
 package nl.davefemi.weatherdashboard.etl.mapper.entity;
 
-import nl.davefemi.weatherdashboard.etl.database.entity.ContinentEntity;
-import nl.davefemi.weatherdashboard.etl.domain.model.ContinentModel;
+import nl.davefemi.weatherdashboard.database.entity.ContinentEntity;
+import nl.davefemi.weatherdashboard.domain.model.ContinentModel;
 import org.springframework.stereotype.Component;
 
 @Component

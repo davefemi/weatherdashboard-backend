@@ -1,0 +1,21 @@
+package nl.davefemi.weatherdashboard.api;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication(
+        scanBasePackages = {
+                "nl.davefemi.weatherdashboard"
+        }
+)
+@EntityScan("nl.davefemi.weatherdashboard.database.entity")
+@EnableJpaRepositories("nl.davefemi.weatherdashboard.database.repository")
+public class ApiApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ApiApplication.class, args);
+    }
+
+}
