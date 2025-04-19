@@ -9,10 +9,15 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>nl.davefemi</groupId>
-	<artifactId>weatherdashboard</artifactId>
+	<artifactId>weatherdashboard-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>weatherdashboard</name>
 	<description>WeatherDasboardApplication</description>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>etl</module>
+	</modules>
 	<url/>
 	<licenses>
 		<license/>

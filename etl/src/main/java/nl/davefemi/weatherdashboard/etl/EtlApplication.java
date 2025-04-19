@@ -4,12 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
 @EnableScheduling
-public class WeatherdashboardApplication {
+@SpringBootApplication
+public class EtlApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WeatherdashboardApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EtlApplication.class, args);
+    }
 
 }
