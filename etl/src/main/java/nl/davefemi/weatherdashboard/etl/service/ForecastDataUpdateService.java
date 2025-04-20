@@ -12,19 +12,19 @@ import nl.davefemi.weatherdashboard.data.entity.HourForecastEntity;
 import nl.davefemi.weatherdashboard.data.entity.WeatherFetchEntity;
 import nl.davefemi.weatherdashboard.data.entity.WeatherFetchLocationEntity;
 import nl.davefemi.weatherdashboard.data.repository.WeatherFetchRepository;
-import nl.davefemi.weatherdashboard.etl.mapper.domain.*;
+import nl.davefemi.weatherdashboard.data.mapper.domain.*;
 import nl.davefemi.weatherdashboard.etl.service.registry.ApiClientDescription;
 import nl.davefemi.weatherdashboard.etl.service.registry.ApiClientRegistry;
-import nl.davefemi.weatherdashboard.etl.service.registry.LocationDescription;
-import nl.davefemi.weatherdashboard.etl.service.registry.LocationRegistry;
+import nl.davefemi.weatherdashboard.data.registry.LocationDescription;
+import nl.davefemi.weatherdashboard.data.registry.LocationRegistry;
 import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.component.CurrentExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.component.ForecastdayExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.component.HourExternalDto;
-import nl.davefemi.weatherdashboard.etl.mapper.entity.ForecastDayEntityMapper;
-import nl.davefemi.weatherdashboard.etl.mapper.entity.HourForecastEntityMapper;
-import nl.davefemi.weatherdashboard.etl.mapper.entity.WeatherFetchEntityMapper;
-import nl.davefemi.weatherdashboard.etl.mapper.entity.WeatherFetchLocationEntityMapper;
+import nl.davefemi.weatherdashboard.data.mapper.entity.ForecastDayEntityMapper;
+import nl.davefemi.weatherdashboard.data.mapper.entity.HourForecastEntityMapper;
+import nl.davefemi.weatherdashboard.data.mapper.entity.WeatherFetchEntityMapper;
+import nl.davefemi.weatherdashboard.data.mapper.entity.WeatherFetchLocationEntityMapper;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 
@@ -99,7 +99,7 @@ public class ForecastDataUpdateService {
         weatherFetchLocationModel =
                 weatherFetchLocationMapper.mapToModel(
                         forecastWeatherExternalDto,
-                        location);
+                        locationRegistry.getLocationDescprition(location).getLocation());
         weatherFetchLocationModel.setRealtimeWeather(getRealTimeWeatherModel(forecastWeatherExternalDto.getCurrent()));
         weatherFetchLocationModel.setJsonRawData(getJsonRawDataModel(rawJsonData));
         for (ForecastdayExternalDto forecastDayExternalDto : forecastWeatherExternalDto.getForecast().getForecastday())

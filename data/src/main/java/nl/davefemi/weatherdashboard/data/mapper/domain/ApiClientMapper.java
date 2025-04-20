@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.mapper.domain;
+package nl.davefemi.weatherdashboard.data.mapper.domain;
 
 import nl.davefemi.weatherdashboard.data.entity.ApiClientEntity;
 import nl.davefemi.weatherdashboard.data.model.ApiClientModel;

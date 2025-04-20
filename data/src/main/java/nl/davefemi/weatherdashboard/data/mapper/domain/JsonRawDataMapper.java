@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.mapper.domain;
+package nl.davefemi.weatherdashboard.data.mapper.domain;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import nl.davefemi.weatherdashboard.data.model.JsonRawDataModel;

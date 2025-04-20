@@ -2,8 +2,8 @@ package nl.davefemi.weatherdashboard.etl.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.etl.service.registry.LocationDescription;
-import nl.davefemi.weatherdashboard.etl.service.registry.LocationRegistry;
+import nl.davefemi.weatherdashboard.data.registry.LocationDescription;
+import nl.davefemi.weatherdashboard.data.registry.LocationRegistry;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

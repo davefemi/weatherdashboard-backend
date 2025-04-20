@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.mapper.entity;
+package nl.davefemi.weatherdashboard.data.mapper.entity;
 
 import nl.davefemi.weatherdashboard.data.entity.JsonRawDataEntity;
 import nl.davefemi.weatherdashboard.data.model.JsonRawDataModel;

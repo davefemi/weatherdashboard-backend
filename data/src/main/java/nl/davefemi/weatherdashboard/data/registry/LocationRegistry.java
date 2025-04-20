@@ -1,10 +1,10 @@
-package nl.davefemi.weatherdashboard.etl.service.registry;
+package nl.davefemi.weatherdashboard.data.registry;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.repository.LocationRepository;
 import nl.davefemi.weatherdashboard.data.model.LocationModel;
-import nl.davefemi.weatherdashboard.etl.mapper.domain.LocationMapper;
+import nl.davefemi.weatherdashboard.data.mapper.domain.LocationMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

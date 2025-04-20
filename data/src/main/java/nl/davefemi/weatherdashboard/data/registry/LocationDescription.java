@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.service.registry;
+package nl.davefemi.weatherdashboard.data.registry;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

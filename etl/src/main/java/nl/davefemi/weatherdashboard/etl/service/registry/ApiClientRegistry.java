@@ -7,7 +7,7 @@ import nl.davefemi.weatherdashboard.client.api.ApiClient;
 import nl.davefemi.weatherdashboard.data.repository.ApiClientRepository;
 import nl.davefemi.weatherdashboard.data.model.ApiClientModel;
 import nl.davefemi.weatherdashboard.client.api.ApiClientInfo;
-import nl.davefemi.weatherdashboard.etl.mapper.domain.ApiClientMapper;
+import nl.davefemi.weatherdashboard.data.mapper.domain.ApiClientMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
-package nl.davefemi.weatherdashboard.etl.mapper.domain;
+package nl.davefemi.weatherdashboard.data.mapper.domain;
 
 import lombok.RequiredArgsConstructor;
+import nl.davefemi.weatherdashboard.data.model.LocationModel;
 import nl.davefemi.weatherdashboard.data.model.WeatherFetchLocationModel;
-import nl.davefemi.weatherdashboard.etl.service.registry.LocationRegistry;
 import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +13,10 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class WeatherFetchLocationMapper {
     private final DateTimeFormatter dateTimeFormatter;
-    private final LocationRegistry locationRegistry;
 
-    public WeatherFetchLocationModel mapToModel(ForecastWeatherExternalDto forecastWeatherExternalDto, String location) {
+    public WeatherFetchLocationModel mapToModel(ForecastWeatherExternalDto forecastWeatherExternalDto, LocationModel location) {
         WeatherFetchLocationModel model = new WeatherFetchLocationModel();
-        model.setLocation(locationRegistry.getLocationDescprition(location).getLocation());
+        model.setLocation(location);
         model.setLocalTime(LocalDateTime.parse(forecastWeatherExternalDto.getLocation().getLocaltime(), dateTimeFormatter));
         return model;
     }

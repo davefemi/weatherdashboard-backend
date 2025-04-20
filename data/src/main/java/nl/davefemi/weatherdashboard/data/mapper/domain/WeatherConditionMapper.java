@@ -1,16 +1,14 @@
-package nl.davefemi.weatherdashboard.etl.mapper.domain;
+package nl.davefemi.weatherdashboard.data.mapper.domain;
 
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.entity.WeatherConditionEntity;
 import nl.davefemi.weatherdashboard.data.model.WeatherConditionModel;
-import nl.davefemi.weatherdashboard.etl.service.registry.WeatherConditionRegistry;
 import nl.davefemi.weatherdashboard.client.dto.component.ConditionExternalDto;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class WeatherConditionMapper {
-    WeatherConditionRegistry weatherConditionRegistry;
 
     public WeatherConditionModel mapToModel(ConditionExternalDto weatherCondition) {
         WeatherConditionModel model = new WeatherConditionModel();

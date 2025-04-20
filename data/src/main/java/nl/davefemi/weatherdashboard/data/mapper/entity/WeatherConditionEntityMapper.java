@@ -1,10 +1,10 @@
-package nl.davefemi.weatherdashboard.etl.mapper.entity;
+package nl.davefemi.weatherdashboard.data.mapper.entity;
 
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.entity.WeatherConditionEntity;
 import nl.davefemi.weatherdashboard.data.repository.WeatherConditionRepository;
 import nl.davefemi.weatherdashboard.data.model.WeatherConditionModel;
-import nl.davefemi.weatherdashboard.etl.service.registry.WeatherConditionRegistry;
+import nl.davefemi.weatherdashboard.data.registry.WeatherConditionRegistry;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

@@ -8,7 +8,7 @@ import nl.davefemi.weatherdashboard.data.model.CurrentWeatherModel;
 import nl.davefemi.weatherdashboard.client.api.CurrentWeatherClient;
 import nl.davefemi.weatherdashboard.client.api.ForecastWeatherClient;
 import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
-import nl.davefemi.weatherdashboard.etl.mapper.CurrentWeatherMapper;
+import nl.davefemi.weatherdashboard.data.mapper.CurrentWeatherMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -27,7 +27,7 @@ public class TempService {
         List<CurrentWeatherEntity> entities =
                 currentWeatherRepository.checkForLatestData(Instant.now().minusSeconds(900), location);
         if (!entities.isEmpty()) {
-            log.info("Information younger than 15 minutes already exists for this query");
+            log.warn("Information younger than 15 minutes already exists for this query");
             return currentWeatherMapper
                     .mapToCurrentWeather(entities.getFirst());
         }

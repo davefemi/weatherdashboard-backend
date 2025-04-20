@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.mapper.entity;
+package nl.davefemi.weatherdashboard.data.mapper.entity;
 
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.entity.HourForecastEntity;

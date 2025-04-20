@@ -18,6 +18,11 @@
 
         <!-- JPA API (if not pulled in transitively) -->
         <dependency>
+            <groupId>nl.davefemi</groupId>
+            <artifactId>client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
