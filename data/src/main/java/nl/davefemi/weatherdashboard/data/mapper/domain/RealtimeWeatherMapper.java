@@ -20,6 +20,7 @@ public class RealtimeWeatherMapper {
         model.setTemperatureC(currentWeatherExternalDto.getTemp_c());
         model.setCondition(weatherConditionMapper.mapToModel(currentWeatherExternalDto.getCondition()));
         model.setDay(currentWeatherExternalDto.getIs_day()==1);
+        model.setWindKph(currentWeatherExternalDto.getWind_kph());
         model.setWindDegree(currentWeatherExternalDto.getWind_degree());
         model.setWindDirection(currentWeatherExternalDto.getWind_dir());
         model.setPressureMb(currentWeatherExternalDto.getPressure_mb());

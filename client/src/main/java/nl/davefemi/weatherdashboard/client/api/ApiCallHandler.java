@@ -60,9 +60,9 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
                 setSleepTime(attempt);
                 log.info("Sleeping for {} milliseconds", sleepTime);
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException ex) {
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                throw new IllegalStateException("Interrupted while sleeping", ex);
+                throw new IllegalStateException("Interrupted while sleeping", e);
             }
         }
         log.warn("Api call failed after {} attempts with status code {} ", MAX_RETRIES, response.getStatusCode());
