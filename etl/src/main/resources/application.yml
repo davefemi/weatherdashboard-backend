@@ -14,7 +14,7 @@ api:
 
 spring:
   config:
-    import: "file:.env/.env.properties"
+    import: "optional:file:.env/.env.properties"
   security:
     encryption:
       password: ${SPRING_SECURITY_ENCRYPTION_PASSWORD}

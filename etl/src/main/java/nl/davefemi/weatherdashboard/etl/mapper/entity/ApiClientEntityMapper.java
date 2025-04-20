@@ -1,7 +1,7 @@
 package nl.davefemi.weatherdashboard.etl.mapper.entity;
 
-import nl.davefemi.weatherdashboard.database.entity.ApiClientEntity;
-import nl.davefemi.weatherdashboard.domain.model.ApiClientModel;
+import nl.davefemi.weatherdashboard.data.entity.ApiClientEntity;
+import nl.davefemi.weatherdashboard.data.model.ApiClientModel;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -16,10 +16,10 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>etl</module>
 		<module>api</module>
-		<module>domain</module>
-		<module>database</module>
+		<module>client</module>
+		<module>data</module>
+		<module>etl</module>
 	</modules>
 	<url/>
 	<licenses>

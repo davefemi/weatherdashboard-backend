@@ -2,8 +2,8 @@ package nl.davefemi.weatherdashboard.etl.service.registry;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.database.repository.LocationRepository;
-import nl.davefemi.weatherdashboard.domain.model.LocationModel;
+import nl.davefemi.weatherdashboard.data.repository.LocationRepository;
+import nl.davefemi.weatherdashboard.data.model.LocationModel;
 import nl.davefemi.weatherdashboard.etl.mapper.domain.LocationMapper;
 import org.springframework.stereotype.Component;
 

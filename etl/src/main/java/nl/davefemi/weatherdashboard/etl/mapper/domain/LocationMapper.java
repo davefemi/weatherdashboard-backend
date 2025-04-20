@@ -2,8 +2,8 @@ package nl.davefemi.weatherdashboard.etl.mapper.domain;
 
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.etl.service.registry.LocationDescription;
-import nl.davefemi.weatherdashboard.database.entity.LocationEntity;
-import nl.davefemi.weatherdashboard.domain.model.LocationModel;
+import nl.davefemi.weatherdashboard.data.entity.LocationEntity;
+import nl.davefemi.weatherdashboard.data.model.LocationModel;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

@@ -1,10 +1,10 @@
 package nl.davefemi.weatherdashboard.etl.mapper.domain;
 
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.database.entity.WeatherConditionEntity;
-import nl.davefemi.weatherdashboard.domain.model.WeatherConditionModel;
+import nl.davefemi.weatherdashboard.data.entity.WeatherConditionEntity;
+import nl.davefemi.weatherdashboard.data.model.WeatherConditionModel;
 import nl.davefemi.weatherdashboard.etl.service.registry.WeatherConditionRegistry;
-import nl.davefemi.weatherdashboard.etl.client.dto.component.ConditionExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.component.ConditionExternalDto;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

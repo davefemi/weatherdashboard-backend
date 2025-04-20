@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.etl.service.TempService;
-import nl.davefemi.weatherdashboard.domain.model.CurrentWeatherModel;
+import nl.davefemi.weatherdashboard.data.model.CurrentWeatherModel;
 import org.springframework.web.bind.annotation.*;
 import nl.davefemi.weatherdashboard.etl.service.ForecastDataUpdateService;
 

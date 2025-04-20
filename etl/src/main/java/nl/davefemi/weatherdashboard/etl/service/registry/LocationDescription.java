@@ -2,8 +2,8 @@ package nl.davefemi.weatherdashboard.etl.service.registry;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.domain.model.ContinentModel;
-import nl.davefemi.weatherdashboard.domain.model.LocationModel;
+import nl.davefemi.weatherdashboard.data.model.ContinentModel;
+import nl.davefemi.weatherdashboard.data.model.LocationModel;
 
 @Data
 @RequiredArgsConstructor

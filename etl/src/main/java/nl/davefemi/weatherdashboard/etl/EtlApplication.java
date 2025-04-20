@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication(scanBasePackages = "nl.davefemi.weatherdashboard")
-@EntityScan("nl.davefemi.weatherdashboard.database.entity")
-@EnableJpaRepositories("nl.davefemi.weatherdashboard.database.repository")
+@EntityScan("nl.davefemi.weatherdashboard.data.entity")
+@EnableJpaRepositories("nl.davefemi.weatherdashboard.data.repository")
 public class EtlApplication {
 
     public static void main(String[] args) {

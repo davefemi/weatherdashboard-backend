@@ -1,9 +1,9 @@
 package nl.davefemi.weatherdashboard.etl.mapper.domain;
 
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.database.entity.AirQualityEntity;
-import nl.davefemi.weatherdashboard.domain.model.AirQualityModel;
-import nl.davefemi.weatherdashboard.etl.client.dto.component.AirQualityExternalDto;
+import nl.davefemi.weatherdashboard.data.entity.AirQualityEntity;
+import nl.davefemi.weatherdashboard.data.model.AirQualityModel;
+import nl.davefemi.weatherdashboard.client.dto.component.AirQualityExternalDto;
 import org.springframework.stereotype.Component;
 
 

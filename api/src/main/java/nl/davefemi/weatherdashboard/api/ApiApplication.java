@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         }
 )
 @EntityScan("nl.davefemi.weatherdashboard.database.entity")
-@EnableJpaRepositories("nl.davefemi.weatherdashboard.database.repository")
+@EnableJpaRepositories("nl.davefemi.weatherdashboard.data.repository")
 public class ApiApplication {
 
     public static void main(String[] args) {

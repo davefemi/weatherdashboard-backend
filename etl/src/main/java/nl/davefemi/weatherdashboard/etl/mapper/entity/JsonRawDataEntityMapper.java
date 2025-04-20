@@ -1,7 +1,7 @@
 package nl.davefemi.weatherdashboard.etl.mapper.entity;
 
-import nl.davefemi.weatherdashboard.database.entity.JsonRawDataEntity;
-import nl.davefemi.weatherdashboard.domain.model.JsonRawDataModel;
+import nl.davefemi.weatherdashboard.data.entity.JsonRawDataEntity;
+import nl.davefemi.weatherdashboard.data.model.JsonRawDataModel;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>nl.davefemi</groupId>
-            <artifactId>database</artifactId>
+            <artifactId>data</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

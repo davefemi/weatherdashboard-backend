@@ -1,8 +1,8 @@
 package nl.davefemi.weatherdashboard.etl.mapper.entity;
 
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.database.entity.ForecastDayEntity;
-import nl.davefemi.weatherdashboard.domain.model.ForecastDayModel;
+import nl.davefemi.weatherdashboard.data.entity.ForecastDayEntity;
+import nl.davefemi.weatherdashboard.data.model.ForecastDayModel;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

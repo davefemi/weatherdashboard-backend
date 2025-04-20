@@ -1,8 +1,8 @@
 package nl.davefemi.weatherdashboard.etl.mapper;
 
-import nl.davefemi.weatherdashboard.database.entity.CurrentWeatherEntity;
-import nl.davefemi.weatherdashboard.domain.model.CurrentWeatherModel;
-import nl.davefemi.weatherdashboard.etl.client.dto.CurrentWeatherExternalDto;
+import nl.davefemi.weatherdashboard.data.entity.CurrentWeatherEntity;
+import nl.davefemi.weatherdashboard.data.model.CurrentWeatherModel;
+import nl.davefemi.weatherdashboard.client.dto.CurrentWeatherExternalDto;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

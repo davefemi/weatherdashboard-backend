@@ -2,12 +2,12 @@ package nl.davefemi.weatherdashboard.etl.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.database.entity.CurrentWeatherEntity;
-import nl.davefemi.weatherdashboard.database.repository.CurrentWeatherRepository;
-import nl.davefemi.weatherdashboard.domain.model.CurrentWeatherModel;
-import nl.davefemi.weatherdashboard.etl.client.api.CurrentWeatherClient;
-import nl.davefemi.weatherdashboard.etl.client.api.ForecastWeatherClient;
-import nl.davefemi.weatherdashboard.etl.client.dto.ForecastWeatherExternalDto;
+import nl.davefemi.weatherdashboard.data.entity.CurrentWeatherEntity;
+import nl.davefemi.weatherdashboard.data.repository.CurrentWeatherRepository;
+import nl.davefemi.weatherdashboard.data.model.CurrentWeatherModel;
+import nl.davefemi.weatherdashboard.client.api.CurrentWeatherClient;
+import nl.davefemi.weatherdashboard.client.api.ForecastWeatherClient;
+import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
 import nl.davefemi.weatherdashboard.etl.mapper.CurrentWeatherMapper;
 import org.springframework.stereotype.Service;
 

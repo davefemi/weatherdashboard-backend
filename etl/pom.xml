@@ -33,14 +33,15 @@
         </dependency>
 
         <!-- 3) Your shared modules—no <version> needed, managed by parent -->
+
         <dependency>
             <groupId>nl.davefemi</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>data</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>nl.davefemi</groupId>
-            <artifactId>database</artifactId>
+            <artifactId>client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
