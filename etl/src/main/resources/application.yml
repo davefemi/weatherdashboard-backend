@@ -1,25 +1,12 @@
 server:
   port: 8081
-supabase:
-  api:
-    url: ${SUPABASE_API_URL}
-    key: ${SUPABASE_API_KEY}
-api:
-  weatherapi:
-    name: ${API_WEATHERAPI_NAME}
-    key: ${API_WEATHERAPI_KEY}
-    url:
-      current-weather: ${API_WEATHERAPI_URL_CURRENT_WEATHER}
-      forecast: ${API_WEATHERAPI_URL_FORECAST}
-
 spring:
   config:
-    import: "optional:file:.env/.env.properties"
+    import: "file:./.env/.env.properties"
   security:
     encryption:
       password: ${SPRING_SECURITY_ENCRYPTION_PASSWORD}
       salt: ${SPRING_SECURITY_ENCRYPTION_SALT}
-
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
@@ -37,3 +24,14 @@ spring:
     properties:
       hibernate:
         format_sql: false
+supabase:
+  api:
+    url: ${SUPABASE_API_URL}
+    key: ${SUPABASE_API_KEY}
+api:
+  weatherapi:
+    name: ${API_WEATHERAPI_NAME}
+    key: ${API_WEATHERAPI_KEY}
+    url:
+      current-weather: ${API_WEATHERAPI_URL_CURRENT_WEATHER}
+      forecast: ${API_WEATHERAPI_URL_FORECAST}

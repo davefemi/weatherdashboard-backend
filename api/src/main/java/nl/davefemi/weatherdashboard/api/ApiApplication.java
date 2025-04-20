@@ -5,12 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(
-        scanBasePackages = {
-                "nl.davefemi.weatherdashboard"
-        }
-)
-@EntityScan("nl.davefemi.weatherdashboard.database.entity")
+@SpringBootApplication(scanBasePackages = "nl.davefemi.weatherdashboard")
+@EntityScan("nl.davefemi.weatherdashboard.data.entity")
 @EnableJpaRepositories("nl.davefemi.weatherdashboard.data.repository")
 public class ApiApplication {
 
