@@ -50,7 +50,7 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
 
     public ResponseEntity<String> call() {
         ResponseEntity<String> response = null;
-        for (int attempt = 1 ; attempt <= MAX_RETRIES; attempt++) {
+        for (int attempt = 1 ; attempt < MAX_RETRIES; attempt++) {
             try {
                 response = restTemplate.getForEntity(apiUrl, String.class);
                 if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null && !response.getBody().isEmpty()) {
