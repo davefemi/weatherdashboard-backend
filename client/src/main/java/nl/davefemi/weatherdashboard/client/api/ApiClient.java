@@ -10,5 +10,5 @@ public interface ApiClient {
 
     ExternalDto getExternalDto(String response);
 
-    String getResponseJson(String location);
+    ApiResponse getApiResponse(String location);
 }

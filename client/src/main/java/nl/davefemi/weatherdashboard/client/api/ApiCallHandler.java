@@ -1,13 +1,21 @@
 package nl.davefemi.weatherdashboard.client.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -27,6 +35,7 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
     HttpStatus.SERVICE_UNAVAILABLE,
     HttpStatus.GATEWAY_TIMEOUT);
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
     private final Random random = new Random();
     private String apiUrl;
     private int sleepTime;
@@ -70,8 +79,9 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
             }
         }
         log.warn("Api call failed after {} attempts with status code {} ", MAX_RETRIES, response.getBody());
+        ResponseEntity<ExternalDto> errorExternalDto;
         return response;
-//        throw new RuntimeException(response.getStatusCode().toString());
+        }
     }
-}
+
 

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.davefemi.weatherdashboard.client.api.ApiResponse;
+import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
 import nl.davefemi.weatherdashboard.data.model.*;
 import nl.davefemi.weatherdashboard.client.api.ForecastWeatherClient;
 import nl.davefemi.weatherdashboard.data.entity.ForecastDayEntity;
@@ -37,6 +39,7 @@ import java.util.Map;
 @Service
 public class ForecastDataUpdateService {
     private final ForecastWeatherClient forecastWeatherClient;
+    private final ErrorLogMapper errorLogMapper;
     private final WeatherFetchMapper weatherFetchMapper;
     private final RealtimeWeatherMapper realtimeWeatherMapper;
     private final ForecastDayMapper forecastDayMapper;
@@ -87,12 +90,18 @@ public class ForecastDataUpdateService {
      * @return WeatherFetchModel with its attributes
      */
     private WeatherFetchLocationModel getWeatherFetchLocationModel(String location) {
-        String fetchResponse = forecastWeatherClient.getResponseJson(location);
-        ForecastWeatherExternalDto forecastWeatherExternalDto = forecastWeatherClient.getExternalDto(fetchResponse);
+        ApiResponse fetchResponse = forecastWeatherClient.getApiResponse(location);
+        if (!fetchResponse.isSuccess()) {
+            WeatherFetchLocationModel weatherFetchLocationModel =
+                    getErrorWeatherModel(forecastWeatherClient.getErrorExternalDto(fetchResponse.getResponse()), location);
+            return weatherFetchLocationModel;
+        }
+
+        ForecastWeatherExternalDto forecastWeatherExternalDto = forecastWeatherClient.getExternalDto(fetchResponse.getResponse());
         WeatherFetchLocationModel weatherFetchLocationModel;
         JsonNode rawJsonData;
         try {
-            rawJsonData = objectMapper.readTree(fetchResponse);
+            rawJsonData = objectMapper.readTree(fetchResponse.getResponse());
         } catch (Exception e) {
             throw new RuntimeException("Could not read Json {}", e);
         }
@@ -104,6 +113,14 @@ public class ForecastDataUpdateService {
         weatherFetchLocationModel.setJsonRawData(getJsonRawDataModel(rawJsonData));
         for (ForecastdayExternalDto forecastDayExternalDto : forecastWeatherExternalDto.getForecast().getForecastday())
             weatherFetchLocationModel.addForecastDay(getForecastDayModel(forecastDayExternalDto));
+        return weatherFetchLocationModel;
+    }
+
+    private WeatherFetchLocationModel getErrorWeatherModel(ErrorExternalDto errorExternalDto, String location) {
+        ErrorLogModel errorLogModel = errorLogMapper.mapToModel(errorExternalDto);
+        WeatherFetchLocationModel weatherFetchLocationModel =
+                weatherFetchLocationMapper.MapForErrorModel(
+                        locationRegistry.getLocationDescprition(location).getLocation(), errorLogModel);
         return weatherFetchLocationModel;
     }
 
@@ -146,11 +163,19 @@ public class ForecastDataUpdateService {
     }
 
     private WeatherFetchLocationEntity getWeatherFetchLocationEntity(WeatherFetchLocationModel weatherFetchLocationModel) {
+        if (weatherFetchLocationModel.getErrorLog() != null) {
+            WeatherFetchLocationEntity weatherFetchLocationEntity = getErrorWeatherFetchLocationEntity(weatherFetchLocationModel);
+            return weatherFetchLocationEntity;
+        }
         WeatherFetchLocationEntity weatherFetchLocationEntity = weatherFetchLocationEntityMapper.mapToEntity(weatherFetchLocationModel);
         for (ForecastDayModel forecastday : weatherFetchLocationModel.getForecastDays()){
             weatherFetchLocationEntity.addForecastDay(getForecastDayEntity(forecastday));
         }
         return weatherFetchLocationEntity;
+    }
+
+    private WeatherFetchLocationEntity getErrorWeatherFetchLocationEntity(WeatherFetchLocationModel weatherFetchLocationModel) {
+        return weatherFetchLocationEntityMapper.mapForErrorEntity(weatherFetchLocationModel);
     }
 
     private ForecastDayEntity getForecastDayEntity(ForecastDayModel forecastDayModel) {

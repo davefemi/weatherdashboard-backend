@@ -3,12 +3,19 @@ package nl.davefemi.weatherdashboard.api.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.api.dto.WeatherHistoryResponseDto;
+import nl.davefemi.weatherdashboard.client.api.ApiResponse;
 import nl.davefemi.weatherdashboard.client.api.CurrentWeatherClient;
+import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
 import nl.davefemi.weatherdashboard.data.entity.CurrentWeatherEntity;
 import nl.davefemi.weatherdashboard.data.mapper.CurrentWeatherMapper;
+import nl.davefemi.weatherdashboard.data.mapper.domain.ErrorLogMapper;
 import nl.davefemi.weatherdashboard.data.model.CurrentWeatherModel;
 import nl.davefemi.weatherdashboard.data.repository.CurrentWeatherRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
+import org.springframework.web.client.HttpStatusCodeException;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -19,6 +26,7 @@ public class DashboardService {
     private final CurrentWeatherClient currentWeatherClient;
     private final CurrentWeatherRepository currentWeatherRepository;
     private final CurrentWeatherMapper currentWeatherMapper;
+    private final ErrorLogMapper errorLogMapper;
 
     public CurrentWeatherModel getCurrentWeather(String location) {
         List<CurrentWeatherEntity> entities =
@@ -28,8 +36,12 @@ public class DashboardService {
             return currentWeatherMapper
                     .mapToCurrentWeather(entities.getFirst());
         }
+        ApiResponse apiResponse = currentWeatherClient.getApiResponse(location);
+        if (!apiResponse.isSuccess()) {
+            throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         CurrentWeatherModel domain = currentWeatherMapper.mapToCurrentWeather(currentWeatherClient
-                .getExternalDto(currentWeatherClient.getResponseJson(location)));
+                .getExternalDto(apiResponse.getResponse()));
         currentWeatherRepository.save(currentWeatherMapper.mapToCurrentWeatherEntity(domain));
         return domain;
     }
