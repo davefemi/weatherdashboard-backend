@@ -36,6 +36,9 @@ public class WeatherFetchLocationEntity {
     @OneToOne(mappedBy ="weatherFetchLocation", cascade = CascadeType.ALL, orphanRemoval = true)
     private JsonRawDataEntity jsonRawData;
 
+    @OneToOne(mappedBy = "weatherFetchLocation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ErrorLogEntity errorLog;
+
     public void setRealtimeWeather(RealtimeWeatherEntity realtimeWeather) {
         this.realtimeWeather = realtimeWeather;
         realtimeWeather.setWeatherFetchLocation(this);
@@ -49,5 +52,10 @@ public class WeatherFetchLocationEntity {
     public void setJsonRawData(JsonRawDataEntity jsonRawData) {
         this.jsonRawData = jsonRawData;
         jsonRawData.setWeatherFetchLocation(this);
+    }
+
+    public void setErrorLog(ErrorLogEntity errorLog) {
+        this.errorLog = errorLog;
+        errorLog.setWeatherFetchLocation(this);
     }
 }

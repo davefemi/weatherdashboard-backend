@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.util.Random;
@@ -53,7 +54,10 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
                 }
 
             } catch (RestClientException e) {
-                response = ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+                HttpStatus code = e instanceof HttpStatusCodeException
+                        ? (HttpStatus) ((HttpStatusCodeException) e).getStatusCode()
+                        : HttpStatus.SERVICE_UNAVAILABLE;
+                response = ResponseEntity.status(code).body(e.getMessage());
                 log.warn("Fetch failed for attempt {} due to {}", attempt, e.getMessage());
             }
             try {
@@ -65,8 +69,9 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
                 throw new IllegalStateException("Interrupted while sleeping", e);
             }
         }
-        log.warn("Api call failed after {} attempts with status code {} ", MAX_RETRIES, response.getStatusCode());
-        throw new RuntimeException(response.getStatusCode().toString());
+        log.warn("Api call failed after {} attempts with status code {} ", MAX_RETRIES, response.getBody());
+        return response;
+//        throw new RuntimeException(response.getStatusCode().toString());
     }
 }
 

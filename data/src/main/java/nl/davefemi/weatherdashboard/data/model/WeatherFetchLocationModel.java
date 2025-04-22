@@ -16,6 +16,7 @@ public class WeatherFetchLocationModel {
     private RealtimeWeatherModel realtimeWeather;
     private List<ForecastDayModel> forecastDays = new ArrayList<>();
     private JsonRawDataModel jsonRawData;
+    private ErrorLogModel errorLog;
 
     public void setRealtimeWeather(RealtimeWeatherModel realtimeWeather) {
         this.realtimeWeather = realtimeWeather;
@@ -30,5 +31,10 @@ public class WeatherFetchLocationModel {
     public void setJsonRawData(JsonRawDataModel jsonRawData) {
         this.jsonRawData = jsonRawData;
         jsonRawData.setWeatherFetchLocation(this);
+    }
+
+    public void setErrorLog(ErrorLogModel errorLog) {
+        this.errorLog = errorLog;
+        errorLog.setWeatherFetchLocation(this);
     }
 }

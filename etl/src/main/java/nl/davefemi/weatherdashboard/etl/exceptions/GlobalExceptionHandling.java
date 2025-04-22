@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Slf4j
-@ControllerAdvice
+@ControllerAdvice(basePackages = "nl.davefemi")
 public class GlobalExceptionHandling {
 
     @ExceptionHandler(Exception.class)
