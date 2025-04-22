@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.utility;
+package nl.davefemi.weatherdashboard.global.utility;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

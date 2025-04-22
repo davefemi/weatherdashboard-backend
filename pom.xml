@@ -20,7 +20,8 @@
 		<module>client</module>
 		<module>data</module>
 		<module>etl</module>
-	</modules>
+        <module>global</module>
+    </modules>
 	<url/>
 	<licenses>
 		<license/>

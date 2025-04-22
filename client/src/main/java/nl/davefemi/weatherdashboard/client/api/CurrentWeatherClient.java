@@ -30,10 +30,9 @@ public class CurrentWeatherClient implements ApiClient {
 
     @Override
     public String getResponseJson(String location) {
-        String url = String.format(apiUrl, apiKey, location);
-        apiCallHandler.setApiUrl(url);
+        apiCallHandler.setApiUrl(String.format(apiUrl, apiKey, location));
         ResponseEntity<String> response = apiCallHandler.call();
-        if (!response.getStatusCode().is2xxSuccessful()) {
+        if (response.getBody() == null || response.getBody().isEmpty() ||!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to fetch weather data " + response.getBody());
         }
         return response.getBody();

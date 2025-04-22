@@ -30,17 +30,12 @@ public class ForecastWeatherClient implements ApiClient {
 
     @Override
     public String getResponseJson(String location) {
-        String url = String.format(apiUrl, apiKey, location);
-        apiCallHandler.setApiUrl(url);
-        ResponseEntity<String> response;
-        try {
-            response = apiCallHandler.call();
-            return response.getBody();
+        apiCallHandler.setApiUrl(String.format(apiUrl, apiKey, location));
+        ResponseEntity<String> response = apiCallHandler.call();
+        if (response.getBody() == null || response.getBody().isEmpty() ||!response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Failed to fetch weather data " + response.getBody());
         }
-        catch (Exception e) {
-            log.error("Failed to fetch weather data", e);
-            throw new RuntimeException("Failed to fetch weather data", e);
-        }
+        return response.getBody();
     }
 }
 

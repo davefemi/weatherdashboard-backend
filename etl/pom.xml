@@ -44,6 +44,11 @@
             <artifactId>client</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>nl.davefemi</groupId>
+            <artifactId>global</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- 4) Optional, for compile‑time: Lombok -->
         <dependency>

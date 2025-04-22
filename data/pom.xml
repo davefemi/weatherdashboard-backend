@@ -14,7 +14,13 @@
     <packaging>jar</packaging>
     <name>weatherdashboard‑data</name>
     <description>data</description>
+
     <dependencies>
+        <dependency>
+            <groupId>nl.davefemi</groupId>
+            <artifactId>global</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- JPA API (if not pulled in transitively) -->
         <dependency>

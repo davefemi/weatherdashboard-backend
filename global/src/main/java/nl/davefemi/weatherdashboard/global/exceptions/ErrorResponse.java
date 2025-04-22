@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.exceptions;
+package nl.davefemi.weatherdashboard.global.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

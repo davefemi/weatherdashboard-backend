@@ -21,6 +21,11 @@
     <dependencies>
         <dependency>
             <groupId>nl.davefemi</groupId>
+            <artifactId>global</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.davefemi</groupId>
             <artifactId>data</artifactId>
             <version>${project.version}</version>
         </dependency>

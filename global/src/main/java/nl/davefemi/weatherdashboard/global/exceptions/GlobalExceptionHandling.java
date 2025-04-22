@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.etl.exceptions;
+package nl.davefemi.weatherdashboard.global.exceptions;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Slf4j
-@ControllerAdvice(basePackages = "nl.davefemi")
+@ControllerAdvice(basePackages = "nl.davefemi.weatherdashboard")
 public class GlobalExceptionHandling {
 
     @ExceptionHandler(Exception.class)

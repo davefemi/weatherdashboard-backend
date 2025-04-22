@@ -7,26 +7,12 @@
         <groupId>nl.davefemi</groupId>
         <artifactId>weatherdashboard-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>client</artifactId>
+    <artifactId>global</artifactId>
     <packaging>jar</packaging>
-    <name>weatherdashboard‑client</name>
-    <description>client</description>
-
-    <dependencies>
-        <dependency>
-            <groupId>nl.davefemi</groupId>
-            <artifactId>global</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.davefemi</groupId>
-            <artifactId>global</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <name>weatherdashboard‑global</name>
+    <description>global</description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
