@@ -57,7 +57,7 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
                     log.info("Succeeded on attempt {}" , attempt);
                     return response;
                 }
-                if (!RETRY_STATUS.contains(response.getStatusCode())) {
+                else if (!RETRY_STATUS.contains(response.getStatusCode())) {
                     log.warn("Fatal error code after {} attempts: " + response.getStatusCode().value(), attempt);
                     return response;
                 }
