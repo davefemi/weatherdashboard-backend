@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 @ApiClientInfo(name = "weatherapi", endpoint = "forecast")
@@ -39,21 +43,23 @@ public class ForecastWeatherClient implements ApiClient {
             JsonNode jsonNode = objectMapper.readTree(jSonNode);
             errorExternalDto = objectMapper.treeToValue(jsonNode.path("error"), ErrorExternalDto.class);
             log.info(errorExternalDto.toString());
+            return errorExternalDto;
         }
         catch (JsonProcessingException e) {
             log.error(e.getMessage());
+            errorExternalDto = new ErrorExternalDto();
+            errorExternalDto.setMessage(e.getMessage());
+            log.error(errorExternalDto.toString());
+            return errorExternalDto;
         }
-        return errorExternalDto;
     }
 
-    @Override
-    public ApiResponse getApiResponse(String location) {
-        apiCallHandler.setApiUrl(String.format(apiUrl, apiKey, location));
-        ResponseEntity<String> response = apiCallHandler.call();
-        if (response.getBody() == null || response.getBody().isEmpty() ||!response.getStatusCode().is2xxSuccessful()) {
-            return new ApiResponse(false, response.getBody());
+    public List<ApiResponse> getApiResponse(List<String> locations) {
+        HashMap<String, String> urls = new HashMap<>();
+        for (String location : locations) {
+            urls.put(location, String.format(apiUrl, apiKey, location));
         }
-        return new ApiResponse(true, response.getBody());
+        return apiCallHandler.getResponses(urls);
     }
 }
 

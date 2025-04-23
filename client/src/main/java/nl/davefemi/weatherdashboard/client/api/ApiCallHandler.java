@@ -1,13 +1,9 @@
 package nl.davefemi.weatherdashboard.client.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
-import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,15 +11,13 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.Callable;
+import java.util.*;
+import java.util.concurrent.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ApiCallHandler implements Callable<ResponseEntity<String>> {
+public class ApiCallHandler implements Callable<ApiResponse> {
     private static final int BASE_DELAY = 1000;
     private static final int MAX_DELAY = 5000;
     private static final int MAX_RETRIES = 5;
@@ -38,28 +32,40 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
     private final ObjectMapper objectMapper;
     private final Random random = new Random();
     private String apiUrl;
+    private String apiLocation;
     private int sleepTime;
 
-    public void setSleepTime(int attempt){
+    private ApiCallHandler newApiCallHandler(String apiLocation, String apiUrl) {
+        ApiCallHandler clone = new ApiCallHandler(this.restTemplate, this.objectMapper);
+        clone.setApiUrl(apiUrl);
+        clone.setApiLocation(apiLocation);
+        return clone;
+    }
+
+    private void setSleepTime(int attempt){
         sleepTime = random.nextInt((int) Math.min(MAX_DELAY, BASE_DELAY * Math.pow(2, attempt)));
     }
 
-    public void setApiUrl(String apiUrl) {
+    private void setApiLocation(String apiLocation) {
+        this.apiLocation = apiLocation;
+    }
+
+    private void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
     }
 
-    public ResponseEntity<String> call() {
+    public ApiResponse call() {
         ResponseEntity<String> response = null;
-        for (int attempt = 1 ; attempt < MAX_RETRIES; attempt++) {
+        for (int attempt = 1; attempt < MAX_RETRIES; attempt++) {
             try {
                 response = restTemplate.getForEntity(apiUrl, String.class);
                 if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null && !response.getBody().isEmpty()) {
                     log.info("Succeeded on attempt {}" , attempt);
-                    return response;
+                    return new ApiResponse(true, apiLocation, response.getBody());
                 }
                 else if (!RETRY_STATUS.contains(response.getStatusCode())) {
                     log.warn("Fatal error code after {} attempts: " + response.getStatusCode().value(), attempt);
-                    return response;
+                    return new ApiResponse(false, apiLocation, response.getBody());
                 }
 
             } catch (RestClientException e) {
@@ -73,14 +79,36 @@ public class ApiCallHandler implements Callable<ResponseEntity<String>> {
                 setSleepTime(attempt);
                 log.info("Sleeping for {} milliseconds", sleepTime);
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("Interrupted while sleeping", e);
-            }
+            } catch (InterruptedException e) {}
         }
         log.warn("Api call failed after {} attempts with status code {} ", MAX_RETRIES, response.getBody());
-        ResponseEntity<ExternalDto> errorExternalDto;
-        return response;
+        return new ApiResponse(false, apiLocation, response.getBody());
+        }
+
+        public List<ApiResponse> getResponses(Map<String, String> callProperties) {
+        List<ApiResponse> responses = new ArrayList<>();
+        ExecutorService pool = Executors.newFixedThreadPool(callProperties.size());
+        List<Future<ApiResponse>> futures;
+        List<Callable<ApiResponse>> tasks = new ArrayList<>();
+        for (Map.Entry<String, String> entry : callProperties.entrySet()) {
+            tasks.add(newApiCallHandler(entry.getKey(), entry.getValue())::call);
+        }
+        try{
+            futures = pool.invokeAll(tasks);
+            for (Future<ApiResponse> future : futures) {
+                responses.add(future.get());
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            if (pool != null) {
+                pool.shutdown();
+            }
+        }
+        return responses;
         }
     }
 

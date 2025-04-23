@@ -25,7 +25,7 @@ public class LocationRegistry {
         });
     }
 
-    public LocationDescription getLocationDescprition(String location){
+    public LocationDescription getLocationDescription(String location){
         return locations.get(location);
     }
 

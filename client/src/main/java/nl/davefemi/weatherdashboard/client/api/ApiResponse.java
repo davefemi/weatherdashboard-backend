@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 public class ApiResponse {
     private final boolean success;
+    private final String location;
     private final String response;
 }

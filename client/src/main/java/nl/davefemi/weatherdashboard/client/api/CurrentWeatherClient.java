@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Slf4j
 @Component
 @ApiClientInfo(name = "weatherapi", endpoint = "realtime")
@@ -28,14 +31,10 @@ public class CurrentWeatherClient implements ApiClient {
         return dto;
     }
 
-    @Override
     public ApiResponse getApiResponse(String location) {
-        apiCallHandler.setApiUrl(String.format(apiUrl, apiKey, location));
-        ResponseEntity<String> response = apiCallHandler.call();
-        if (response.getBody() == null || response.getBody().isEmpty() ||!response.getStatusCode().is2xxSuccessful()) {
-            return new ApiResponse(false, response.getBody());
-        }
-        return new ApiResponse(true, response.getBody());
+        HashMap<String, String> urls = new HashMap<>();
+        urls.put(location, String.format(apiUrl, apiKey, location));
+        return apiCallHandler.getResponses(urls).getFirst();
     }
 
 
