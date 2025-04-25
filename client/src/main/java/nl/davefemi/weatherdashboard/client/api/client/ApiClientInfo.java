@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.client.api;
+package nl.davefemi.weatherdashboard.client.api.client;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;

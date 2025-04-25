@@ -2,7 +2,7 @@ package nl.davefemi.weatherdashboard.client.dto.component;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
-import nl.davefemi.weatherdashboard.client.api.LocalTimeFallbackDeserializer;
+import nl.davefemi.weatherdashboard.client.api.client.LocalTimeFallbackDeserializer;
 
 @Data
 public class AstroExternalDto {

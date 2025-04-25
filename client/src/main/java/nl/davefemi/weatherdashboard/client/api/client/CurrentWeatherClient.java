@@ -1,16 +1,16 @@
-package nl.davefemi.weatherdashboard.client.api;
+package nl.davefemi.weatherdashboard.client.api.client;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import nl.davefemi.weatherdashboard.client.api.call.ApiCallHandler;
+import nl.davefemi.weatherdashboard.client.api.call.ApiResponse;
 import nl.davefemi.weatherdashboard.client.dto.CurrentWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 @Slf4j
 @Component
@@ -31,9 +31,9 @@ public class CurrentWeatherClient implements ApiClient {
     }
 
     public ApiResponse getApiResponse(String location) {
-        HashMap<String, String> urls = new HashMap<>();
-        urls.put(location, String.format(apiUrl, apiKey, location));
-        return apiCallHandler.getResponses(urls).getFirst();
+        ArrayList<String> locations = new ArrayList<>();
+        locations.add(location);
+        return apiCallHandler.getResponses(locations, apiUrl, apiKey).getFirst();
     }
 
 

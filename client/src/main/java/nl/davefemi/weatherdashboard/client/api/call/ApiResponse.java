@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.client.api;
+package nl.davefemi.weatherdashboard.client.api.call;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

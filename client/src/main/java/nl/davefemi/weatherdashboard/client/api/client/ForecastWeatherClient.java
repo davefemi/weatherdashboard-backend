@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.client.api;
+package nl.davefemi.weatherdashboard.client.api.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import nl.davefemi.weatherdashboard.client.api.call.ApiCallHandler;
+import nl.davefemi.weatherdashboard.client.api.call.ApiResponse;
 import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.ExternalDtoAggregator;
 import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import java.util.HashMap;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,11 +44,7 @@ public class ForecastWeatherClient implements ApiClient {
     }
 
     private List<ApiResponse> getApiResponse(List<String> locations) {
-        HashMap<String, String> urls = new HashMap<>();
-        for (String location : locations) {
-            urls.put(location, String.format(apiUrl, apiKey, location));
-        }
-        return apiCallHandler.getResponses(urls);
+        return apiCallHandler.getResponses(locations, apiUrl, apiKey);
     }
 
     @SneakyThrows
@@ -56,19 +54,19 @@ public class ForecastWeatherClient implements ApiClient {
     }
 
     private ErrorExternalDto getErrorExternalDto(String response) {
-        String jSonNode = response.substring(response.indexOf('{'));
-        log.info(jSonNode);
-        ErrorExternalDto errorExternalDto = new ErrorExternalDto();
+        ErrorExternalDto errorExternalDto;
         try {
+            String jSonNode = response.substring(response.indexOf('{'));
+            log.info(jSonNode);
             JsonNode jsonNode = objectMapper.readTree(jSonNode);
             errorExternalDto = objectMapper.treeToValue(jsonNode.path("error"), ErrorExternalDto.class);
             log.info(errorExternalDto.toString());
             return errorExternalDto;
         }
-        catch (JsonProcessingException e) {
+        catch (Exception e) {
             log.error(e.getMessage());
             errorExternalDto = new ErrorExternalDto();
-            errorExternalDto.setMessage(e.getMessage());
+            errorExternalDto.setMessage(response);
             log.error(errorExternalDto.toString());
             return errorExternalDto;
         }
@@ -83,9 +81,5 @@ public class ForecastWeatherClient implements ApiClient {
         }
         return rawJsonData;
     }
-
-
-
-
 }
 

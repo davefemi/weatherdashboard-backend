@@ -3,9 +3,8 @@ package nl.davefemi.weatherdashboard.api.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.api.dto.WeatherHistoryResponseDto;
-import nl.davefemi.weatherdashboard.client.api.ApiResponse;
-import nl.davefemi.weatherdashboard.client.api.CurrentWeatherClient;
-import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.api.call.ApiResponse;
+import nl.davefemi.weatherdashboard.client.api.client.CurrentWeatherClient;
 import nl.davefemi.weatherdashboard.data.entity.CurrentWeatherEntity;
 import nl.davefemi.weatherdashboard.data.mapper.CurrentWeatherMapper;
 import nl.davefemi.weatherdashboard.data.mapper.domain.ErrorLogMapper;
@@ -14,11 +13,8 @@ import nl.davefemi.weatherdashboard.data.repository.CurrentWeatherRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.ErrorResponseException;
-import org.springframework.web.client.HttpStatusCodeException;
 
-import java.lang.reflect.Array;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j

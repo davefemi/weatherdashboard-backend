@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.client.api;
+package nl.davefemi.weatherdashboard.client.api.client;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

@@ -3,7 +3,7 @@ package nl.davefemi.weatherdashboard.etl.service.registry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import nl.davefemi.weatherdashboard.client.api.ApiClient;
+import nl.davefemi.weatherdashboard.client.api.client.ApiClient;
 import nl.davefemi.weatherdashboard.data.model.ApiClientModel;
 
 @RequiredArgsConstructor

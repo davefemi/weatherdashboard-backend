@@ -1,6 +1,5 @@
-package nl.davefemi.weatherdashboard.client.api;
+package nl.davefemi.weatherdashboard.client.api.client;
 
-import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
