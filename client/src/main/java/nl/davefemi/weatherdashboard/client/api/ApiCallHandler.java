@@ -3,14 +3,12 @@ package nl.davefemi.weatherdashboard.client.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -34,25 +32,6 @@ public class ApiCallHandler implements Callable<ApiResponse> {
     private String apiUrl;
     private String apiLocation;
     private int sleepTime;
-
-    private ApiCallHandler newApiCallHandler(String apiLocation, String apiUrl) {
-        ApiCallHandler clone = new ApiCallHandler(this.restTemplate, this.objectMapper);
-        clone.setApiUrl(apiUrl);
-        clone.setApiLocation(apiLocation);
-        return clone;
-    }
-
-    private void setSleepTime(int attempt){
-        sleepTime = random.nextInt((int) Math.min(MAX_DELAY, BASE_DELAY * Math.pow(2, attempt)));
-    }
-
-    private void setApiLocation(String apiLocation) {
-        this.apiLocation = apiLocation;
-    }
-
-    private void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl;
-    }
 
     public ApiResponse call() {
         ResponseEntity<String> response = null;
@@ -109,7 +88,26 @@ public class ApiCallHandler implements Callable<ApiResponse> {
             }
         }
         return responses;
-        }
     }
+
+    private ApiCallHandler newApiCallHandler(String apiLocation, String apiUrl) {
+        ApiCallHandler clone = new ApiCallHandler(this.restTemplate, this.objectMapper);
+        clone.setApiUrl(apiUrl);
+        clone.setApiLocation(apiLocation);
+        return clone;
+    }
+
+    private void setSleepTime(int attempt){
+        sleepTime = random.nextInt((int) Math.min(MAX_DELAY, BASE_DELAY * Math.pow(2, attempt)));
+    }
+
+    private void setApiLocation(String apiLocation) {
+        this.apiLocation = apiLocation;
+    }
+
+    private void setApiUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
+    }
+}
 
 

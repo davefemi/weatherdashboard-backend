@@ -7,12 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.ExternalDtoAggregator;
 import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,14 +26,36 @@ public class ForecastWeatherClient implements ApiClient {
     private final ApiCallHandler apiCallHandler;
     private final ObjectMapper objectMapper;
 
+    public ExternalDtoAggregator getExternalDtoAggregator(List<String> locations) {
+        List<ApiResponse> responses = getApiResponse(locations);
+        ExternalDtoAggregator aggregator = new ExternalDtoAggregator();
+        for (ApiResponse response : responses) {
+            if (response.isSuccess()){
+                aggregator.addExternalDto(response.getLocation(), getExternalDto(response.getResponse()));
+                aggregator.addJsonRawData(response.getLocation(), getJsonRawData(response.getResponse()));
+            }
+            if (!response.isSuccess()){
+                aggregator.addExternalDto(response.getLocation(), getErrorExternalDto(response.getResponse()));
+            }
+        }
+        return aggregator;
+    }
+
+    private List<ApiResponse> getApiResponse(List<String> locations) {
+        HashMap<String, String> urls = new HashMap<>();
+        for (String location : locations) {
+            urls.put(location, String.format(apiUrl, apiKey, location));
+        }
+        return apiCallHandler.getResponses(urls);
+    }
+
     @SneakyThrows
-    @Override
-    public ForecastWeatherExternalDto getExternalDto(String response) {
+    private ForecastWeatherExternalDto getExternalDto(String response) {
         ForecastWeatherExternalDto dto = objectMapper.readValue(response, ForecastWeatherExternalDto.class);
         return dto;
     }
 
-    public ErrorExternalDto getErrorExternalDto(String response) {
+    private ErrorExternalDto getErrorExternalDto(String response) {
         String jSonNode = response.substring(response.indexOf('{'));
         log.info(jSonNode);
         ErrorExternalDto errorExternalDto = new ErrorExternalDto();
@@ -54,12 +74,18 @@ public class ForecastWeatherClient implements ApiClient {
         }
     }
 
-    public List<ApiResponse> getApiResponse(List<String> locations) {
-        HashMap<String, String> urls = new HashMap<>();
-        for (String location : locations) {
-            urls.put(location, String.format(apiUrl, apiKey, location));
+    private JsonNode getJsonRawData(String response) {
+        JsonNode rawJsonData;
+        try {
+            rawJsonData = objectMapper.readTree(response);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not read Json {}", e);
         }
-        return apiCallHandler.getResponses(urls);
+        return rawJsonData;
     }
+
+
+
+
 }
 

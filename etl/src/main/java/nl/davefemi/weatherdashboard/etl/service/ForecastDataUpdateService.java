@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.client.api.ApiResponse;
 import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.ExternalDtoAggregator;
 import nl.davefemi.weatherdashboard.data.model.*;
 import nl.davefemi.weatherdashboard.client.api.ForecastWeatherClient;
 import nl.davefemi.weatherdashboard.data.entity.ForecastDayEntity;
@@ -42,21 +44,10 @@ import java.util.Map;
 @Service
 public class ForecastDataUpdateService {
     private final ForecastWeatherClient forecastWeatherClient;
-    private final ErrorLogMapper errorLogMapper;
-    private final WeatherFetchMapper weatherFetchMapper;
-    private final RealtimeWeatherMapper realtimeWeatherMapper;
-    private final ForecastDayMapper forecastDayMapper;
-    private final HourForecastMapper hourForecastMapper;
-    private final WeatherFetchLocationMapper weatherFetchLocationMapper;
-    private final WeatherFetchLocationEntityMapper weatherFetchLocationEntityMapper;
-    private final WeatherFetchEntityMapper weatherFetchEntityMapper;
-    private final HourForecastEntityMapper hourForecastEntityMapper;
-    private final JsonRawDataMapper jsonRawDataMapper;
-    private final WeatherFetchRepository weatherFetchRepository;
-    private final ForecastDayEntityMapper forecastDayEntityMapper;
     private final LocationRegistry locationRegistry;
     private final ApiClientRegistry apiClientRegistry;
-    private final ObjectMapper objectMapper;
+    private final WeatherDataTransformationService weatherDataTransformationService;
+    private final WeatherDataPersistenceService weatherDataPersistenceService;
 
     /**
      * This is the main method which calls helper methods. It will obtain the high level domain model
@@ -64,142 +55,14 @@ public class ForecastDataUpdateService {
      */
     @Transactional
     public void updateForecastWeatherData() {
-        WeatherFetchModel weatherFetchModel = getWeatherFetchModel();
-        WeatherFetchEntity weatherFetchEntity = getWeatherFetchEntity(weatherFetchModel);
-        weatherFetchRepository.save(weatherFetchEntity);
-    }
-
-    /**
-     * Helper method obtaining the WeatherFetchModel which is an aggregate of fetches for different predetermined
-     * locations. It will make use of the local location and api registry to be able to correctly assign each fetch to
-     * the api and location
-     * @return WeatherFetchModel with a list of WeatherFetchLocations
-     */
-    private WeatherFetchModel getWeatherFetchModel() {
-        Map<String, LocationDescription> locationDescriptions = locationRegistry.getLocations();
-        ApiClientDescription apiClientDescription = apiClientRegistry.getApiClientDescription(forecastWeatherClient);
-        WeatherFetchModel weatherFetchModel = weatherFetchMapper.mapToModel(apiClientDescription.getApiClientModel());
-        List<WeatherFetchLocationModel> weatherFetchLocationModels = getWeatherFetchLocationModels(locationDescriptions);
-        for (WeatherFetchLocationModel weatherFetchLocationModel : weatherFetchLocationModels) {
-            weatherFetchModel.addWeatherFetchLocation(weatherFetchLocationModel);
-        }
-        return weatherFetchModel;
-    }
-
-    /**
-     * Helper method obtaining the individual locational fetches and transforming them into domain models. Also responsible
-     * for passing the raw data into an individual model for persistence
-     * @param locationDescriptions of the fetch
-     * @return WeatherFetchModel with its attributes
-     */
-    private List<WeatherFetchLocationModel> getWeatherFetchLocationModels(Map<String, LocationDescription> locationDescriptions) {
         List<String> locations = new ArrayList<>();
-        for (LocationDescription locationDescription : locationDescriptions.values()) {
+        for (LocationDescription locationDescription : locationRegistry.getLocations().values()) {
             locations.add(locationDescription.getLocation().getName());
         }
-        List<ApiResponse> fetchResponses = forecastWeatherClient.getApiResponse(locations);
-        List<WeatherFetchLocationModel> weatherFetchLocationModels = new ArrayList<>();
-        for (ApiResponse fetchResponse : fetchResponses) {
-            if (!fetchResponse.isSuccess()) {
-                WeatherFetchLocationModel weatherFetchLocationModel =
-                        getErrorWeatherModel(forecastWeatherClient.getErrorExternalDto(fetchResponse.getResponse()), fetchResponse.getLocation());
-                weatherFetchLocationModels.add(weatherFetchLocationModel);
-            }
-            else {
-                ForecastWeatherExternalDto forecastWeatherExternalDto = forecastWeatherClient.getExternalDto(fetchResponse.getResponse());
-                WeatherFetchLocationModel weatherFetchLocationModel;
-                JsonNode rawJsonData;
-                try {
-                    rawJsonData = objectMapper.readTree(fetchResponse.getResponse());
-                } catch (Exception e) {
-                    throw new RuntimeException("Could not read Json {}", e);
-                }
-                weatherFetchLocationModel =
-                        weatherFetchLocationMapper.mapToModel(
-                                forecastWeatherExternalDto,
-                                locationRegistry.getLocationDescription(fetchResponse.getLocation()).getLocation());
-                weatherFetchLocationModel.setRealtimeWeather(getRealTimeWeatherModel(forecastWeatherExternalDto.getCurrent()));
-                weatherFetchLocationModel.setJsonRawData(getJsonRawDataModel(rawJsonData));
-                for (ForecastdayExternalDto forecastDayExternalDto : forecastWeatherExternalDto.getForecast().getForecastday()) {
-                    weatherFetchLocationModel.addForecastDay(getForecastDayModel(forecastDayExternalDto));
-                }
-                weatherFetchLocationModels.add(weatherFetchLocationModel);
-            }
-        }
-        return weatherFetchLocationModels;
-    }
-
-    private WeatherFetchLocationModel getErrorWeatherModel(ErrorExternalDto errorExternalDto, String location) {
-        ErrorLogModel errorLogModel = errorLogMapper.mapToModel(errorExternalDto);
-        WeatherFetchLocationModel weatherFetchLocationModel =
-                weatherFetchLocationMapper.MapForErrorModel(
-                        locationRegistry.getLocationDescription(location).getLocation(), errorLogModel);
-        return weatherFetchLocationModel;
-    }
-
-    /**
-     * Responsible for obtaining a domain model with realtime weather data
-     * @param currentExternalDto data from Api call mapped into a respresentational strucutre
-     * @return RealTimeWeatherModel
-     */
-    private RealtimeWeatherModel getRealTimeWeatherModel(CurrentExternalDto currentExternalDto) {
-        return realtimeWeatherMapper.mapToModel(currentExternalDto);
-    }
-
-    /**
-     * Responsible for obtaining a domain model with raw data
-     * @param rawJsonData JsonNode from Api call
-     * @return JsonRawDataModel
-     */
-    private JsonRawDataModel getJsonRawDataModel(JsonNode rawJsonData) {
-        return jsonRawDataMapper.mapToModel(rawJsonData);
-    }
-
-    private ForecastDayModel getForecastDayModel(ForecastdayExternalDto forecastdayExternalDto) {
-        ForecastDayModel forecastDayModel = forecastDayMapper.mapToModel(forecastdayExternalDto);
-        for (HourExternalDto hourExternalDto : forecastdayExternalDto.getHour()) {
-            forecastDayModel.addHourForecast(getHourForecastModel(hourExternalDto));
-        }
-        return forecastDayModel;
-    }
-
-    private HourForecastModel getHourForecastModel(HourExternalDto hourExternalDto) {
-        return hourForecastMapper.mapToModel(hourExternalDto);
-    }
-
-    private WeatherFetchEntity getWeatherFetchEntity(WeatherFetchModel weatherFetchModel) {
-        WeatherFetchEntity weatherFetchEntity = weatherFetchEntityMapper.mapToEntity(weatherFetchModel);
-        for (WeatherFetchLocationModel weatherFetchLocationModel : weatherFetchModel.getWeatherFetchLocations()) {
-            weatherFetchEntity.addWeatherFetchLocation(getWeatherFetchLocationEntity(weatherFetchLocationModel));
-        }
-        return weatherFetchEntity;
-    }
-
-    private WeatherFetchLocationEntity getWeatherFetchLocationEntity(WeatherFetchLocationModel weatherFetchLocationModel) {
-        if (weatherFetchLocationModel.getErrorLog() != null) {
-            WeatherFetchLocationEntity weatherFetchLocationEntity = getErrorWeatherFetchLocationEntity(weatherFetchLocationModel);
-            return weatherFetchLocationEntity;
-        }
-        WeatherFetchLocationEntity weatherFetchLocationEntity = weatherFetchLocationEntityMapper.mapToEntity(weatherFetchLocationModel);
-        for (ForecastDayModel forecastday : weatherFetchLocationModel.getForecastDays()){
-            weatherFetchLocationEntity.addForecastDay(getForecastDayEntity(forecastday));
-        }
-        return weatherFetchLocationEntity;
-    }
-
-    private WeatherFetchLocationEntity getErrorWeatherFetchLocationEntity(WeatherFetchLocationModel weatherFetchLocationModel) {
-        return weatherFetchLocationEntityMapper.mapForErrorEntity(weatherFetchLocationModel);
-    }
-
-    private ForecastDayEntity getForecastDayEntity(ForecastDayModel forecastDayModel) {
-        ForecastDayEntity forecastDayEntity = forecastDayEntityMapper.mapToEntity(forecastDayModel);
-        for (HourForecastModel hourForecast : forecastDayModel.getHourForecasts()) {
-            forecastDayEntity.addHourForecast(getHourForecastEntity(hourForecast));
-        }
-        return forecastDayEntity;
-    }
-
-    private HourForecastEntity getHourForecastEntity(HourForecastModel hourForecast) {
-        return hourForecastEntityMapper.mapToEntity(hourForecast);
+        ExternalDtoAggregator externalDtoAggregator = forecastWeatherClient.getExternalDtoAggregator(locations);
+        WeatherFetchModel weatherFetchModel = weatherDataTransformationService.getWeatherFetchModel(
+                externalDtoAggregator,
+                apiClientRegistry.getApiClientDescription(forecastWeatherClient).getApiClientModel());
+        weatherDataPersistenceService.persistWeatherFetchModel(weatherFetchModel);
     }
 }

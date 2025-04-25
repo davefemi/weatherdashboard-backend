@@ -1,5 +1,6 @@
 package nl.davefemi.weatherdashboard.client.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import nl.davefemi.weatherdashboard.client.dto.component.CurrentExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.component.ForecastExternalDto;

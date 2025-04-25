@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ApiClient {
 
-    ExternalDto getExternalDto(String response);
+//    ExternalDto getExternalDto(String response);
 
 //    ApiResponse getApiResponse(String location);
 }

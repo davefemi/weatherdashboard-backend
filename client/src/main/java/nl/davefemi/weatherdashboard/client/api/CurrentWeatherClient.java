@@ -25,7 +25,6 @@ public class CurrentWeatherClient implements ApiClient {
     private final ApiCallHandler apiCallHandler;
 
     @SneakyThrows
-    @Override
     public CurrentWeatherExternalDto getExternalDto(String response) {
         CurrentWeatherExternalDto dto = objectMapper.readValue(response, CurrentWeatherExternalDto.class);
         return dto;
