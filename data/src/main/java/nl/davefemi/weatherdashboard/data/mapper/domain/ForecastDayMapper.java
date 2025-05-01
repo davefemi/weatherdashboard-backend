@@ -3,7 +3,7 @@ package nl.davefemi.weatherdashboard.data.mapper.domain;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.entity.ForecastDayEntity;
 import nl.davefemi.weatherdashboard.data.model.ForecastDayModel;
-import nl.davefemi.weatherdashboard.client.dto.component.ForecastdayExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.component.ForecastdayExternalDto;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalTime;

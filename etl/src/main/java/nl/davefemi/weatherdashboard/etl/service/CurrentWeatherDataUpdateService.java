@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.client.api.client.CurrentWeatherClient;
 import nl.davefemi.weatherdashboard.data.repository.CurrentWeatherRepository;
-import nl.davefemi.weatherdashboard.client.dto.CurrentWeatherExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.CurrentWeatherExternalDto;
 import nl.davefemi.weatherdashboard.data.mapper.CurrentWeatherMapper;
 import org.springframework.stereotype.Service;
 

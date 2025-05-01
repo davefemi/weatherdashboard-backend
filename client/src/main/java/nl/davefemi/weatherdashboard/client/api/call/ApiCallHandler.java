@@ -26,7 +26,6 @@ public class ApiCallHandler {
                 responses.add(future.get());
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -38,5 +37,3 @@ public class ApiCallHandler {
         return responses;
     }
 }
-
-

@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.client.dto.component;
+package nl.davefemi.weatherdashboard.client.dto.weatherapi.component;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;

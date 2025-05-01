@@ -1,4 +1,4 @@
-package nl.davefemi.weatherdashboard.client.dto.component;
+package nl.davefemi.weatherdashboard.client.dto.weatherapi.component;
 
 import lombok.Data;
 import java.util.ArrayList;

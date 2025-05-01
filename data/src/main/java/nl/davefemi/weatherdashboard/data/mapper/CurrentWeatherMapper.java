@@ -2,7 +2,7 @@ package nl.davefemi.weatherdashboard.data.mapper;
 
 import nl.davefemi.weatherdashboard.data.entity.CurrentWeatherEntity;
 import nl.davefemi.weatherdashboard.data.model.CurrentWeatherModel;
-import nl.davefemi.weatherdashboard.client.dto.CurrentWeatherExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.CurrentWeatherExternalDto;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

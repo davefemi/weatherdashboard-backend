@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.model.ErrorLogModel;
 import nl.davefemi.weatherdashboard.data.model.LocationModel;
 import nl.davefemi.weatherdashboard.data.model.WeatherFetchLocationModel;
-import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ForecastWeatherExternalDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

@@ -3,7 +3,7 @@ package nl.davefemi.weatherdashboard.etl.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.davefemi.weatherdashboard.client.dto.ExternalDtoAggregator;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ExternalDtoAggregator;
 import nl.davefemi.weatherdashboard.data.model.*;
 import nl.davefemi.weatherdashboard.client.api.client.ForecastWeatherClient;
 import nl.davefemi.weatherdashboard.etl.service.registry.ApiClientRegistry;

@@ -1,11 +1,11 @@
-package nl.davefemi.weatherdashboard.client.dto.component;
+package nl.davefemi.weatherdashboard.client.dto.weatherapi.component;
 
 import lombok.Data;
 
 @Data
-public class CurrentExternalDto {
-    private long last_updated_epoch;
-    private String last_updated;
+public class HourExternalDto {
+    private long time_epoch;
+    private String time;
     private float temp_c;
     private float temp_f;
     private long is_day;
@@ -18,6 +18,7 @@ public class CurrentExternalDto {
     private float pressure_in;
     private float precip_mm;
     private float precip_in;
+    private float snow_cm;
     private float humidity;
     private long cloud;
     private float feelslike_c;
@@ -28,10 +29,13 @@ public class CurrentExternalDto {
     private float heatindex_f;
     private float dewpoint_c;
     private float dewpoint_f;
+    private long will_it_rain;
+    private long chance_of_rain;
+    private long will_it_snow;
+    private long chance_of_snow;
     private float vis_km;
     private float vis_miles;
-    private float uv;
     private float gust_mph;
     private float gust_kph;
-    private AirQualityExternalDto air_quality;
+    private float uv;
 }

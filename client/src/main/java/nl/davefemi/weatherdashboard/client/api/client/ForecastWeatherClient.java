@@ -1,6 +1,5 @@
 package nl.davefemi.weatherdashboard.client.api.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +7,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import nl.davefemi.weatherdashboard.client.api.call.ApiCallHandler;
 import nl.davefemi.weatherdashboard.client.api.call.ApiResponse;
-import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
-import nl.davefemi.weatherdashboard.client.dto.ExternalDtoAggregator;
-import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ExternalDtoAggregator;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ForecastWeatherExternalDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

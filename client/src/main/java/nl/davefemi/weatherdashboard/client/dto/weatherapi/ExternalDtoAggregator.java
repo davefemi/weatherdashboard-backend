@@ -1,12 +1,11 @@
-package nl.davefemi.weatherdashboard.client.dto;
+package nl.davefemi.weatherdashboard.client.dto.weatherapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 import lombok.Setter;
+import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter

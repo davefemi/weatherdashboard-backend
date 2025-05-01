@@ -1,6 +1,6 @@
 package nl.davefemi.weatherdashboard.data.mapper.domain;
 
-import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ErrorExternalDto;
 import nl.davefemi.weatherdashboard.data.model.ErrorLogModel;
 import org.springframework.stereotype.Component;
 

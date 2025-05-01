@@ -2,18 +2,14 @@ package nl.davefemi.weatherdashboard.etl.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
-import nl.davefemi.weatherdashboard.client.dto.ErrorExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ErrorExternalDto;
 import nl.davefemi.weatherdashboard.client.dto.ExternalDto;
-import nl.davefemi.weatherdashboard.client.dto.ExternalDtoAggregator;
-import nl.davefemi.weatherdashboard.client.dto.ForecastWeatherExternalDto;
-import nl.davefemi.weatherdashboard.client.dto.component.CurrentExternalDto;
-import nl.davefemi.weatherdashboard.client.dto.component.ForecastdayExternalDto;
-import nl.davefemi.weatherdashboard.client.dto.component.HourExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ExternalDtoAggregator;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.ForecastWeatherExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.component.CurrentExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.component.ForecastdayExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.component.HourExternalDto;
 import nl.davefemi.weatherdashboard.data.mapper.domain.*;
-import nl.davefemi.weatherdashboard.data.mapper.entity.ForecastDayEntityMapper;
-import nl.davefemi.weatherdashboard.data.mapper.entity.HourForecastEntityMapper;
-import nl.davefemi.weatherdashboard.data.mapper.entity.WeatherFetchEntityMapper;
-import nl.davefemi.weatherdashboard.data.mapper.entity.WeatherFetchLocationEntityMapper;
 import nl.davefemi.weatherdashboard.data.model.*;
 import nl.davefemi.weatherdashboard.data.registry.LocationRegistry;
 import org.springframework.stereotype.Service;
@@ -50,8 +46,7 @@ public class WeatherDataTransformationService {
             ExternalDto externalDto = entry.getValue();
             if (externalDto instanceof ForecastWeatherExternalDto){
                 ForecastWeatherExternalDto forecastWeatherExternalDto = (ForecastWeatherExternalDto) externalDto;
-                WeatherFetchLocationModel weatherFetchLocationModel;
-                weatherFetchLocationModel =
+                WeatherFetchLocationModel weatherFetchLocationModel =
                         weatherFetchLocationMapper.mapToModel(
                                 forecastWeatherExternalDto,
                                 locationRegistry.getLocationDescription(location).getLocation());

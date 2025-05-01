@@ -3,7 +3,7 @@ package nl.davefemi.weatherdashboard.data.mapper.domain;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.entity.HourForecastEntity;
 import nl.davefemi.weatherdashboard.data.model.HourForecastModel;
-import nl.davefemi.weatherdashboard.client.dto.component.HourExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.component.HourExternalDto;
 import org.springframework.stereotype.Component;
 
 @Component

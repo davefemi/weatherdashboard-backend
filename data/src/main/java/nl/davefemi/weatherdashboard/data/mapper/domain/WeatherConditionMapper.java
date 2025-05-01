@@ -3,7 +3,7 @@ package nl.davefemi.weatherdashboard.data.mapper.domain;
 import lombok.RequiredArgsConstructor;
 import nl.davefemi.weatherdashboard.data.entity.WeatherConditionEntity;
 import nl.davefemi.weatherdashboard.data.model.WeatherConditionModel;
-import nl.davefemi.weatherdashboard.client.dto.component.ConditionExternalDto;
+import nl.davefemi.weatherdashboard.client.dto.weatherapi.component.ConditionExternalDto;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
