@@ -17,16 +17,9 @@ import java.util.concurrent.Callable;
 @RequiredArgsConstructor
 public class ApiCallFactory {
     private final RestTemplate restTemplate;
-    private int threadCount = 1;
 
-    public ApiCall createApiCall(String apiUrl, String location) {
-        return new ApiCall(getThreadCount(), restTemplate, apiUrl, location);
-    }
-
-    private int getThreadCount() {
-        int threadCount = this.threadCount;
-        this.threadCount++;
-        return threadCount;
+    public ApiCall createApiCall(String apiUrl, String location, int threadCount) {
+        return new ApiCall(threadCount, restTemplate, apiUrl, location);
     }
 
         @Slf4j

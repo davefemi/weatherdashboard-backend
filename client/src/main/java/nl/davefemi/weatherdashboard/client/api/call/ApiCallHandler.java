@@ -18,7 +18,7 @@ public class ApiCallHandler {
         List<Future<ApiResponse>> futures;
         List<Callable<ApiResponse>> tasks = new ArrayList<>();
         for (String location : locations) {
-            tasks.add(apiCallFactory.createApiCall(String.format(apiUrl, apiKey, location), location)::call);
+            tasks.add(apiCallFactory.createApiCall(String.format(apiUrl, apiKey, location), location, tasks.size()+1)::call);
         }
         try{
             futures = pool.invokeAll(tasks);
