@@ -46,9 +46,10 @@ public class WeatherDataTransformationService {
     private List<WeatherFetchLocationModel> getWeatherFetchLocationModels (ExternalDtoAggregator externalDtoAggregator){
         List<WeatherFetchLocationModel> weatherFetchLocationModels = new ArrayList<>();
         for (Map.Entry <String, ExternalDto> entry : externalDtoAggregator.getExternalDto().entrySet()){
-            if (entry.getValue() instanceof ForecastWeatherExternalDto){
-                ForecastWeatherExternalDto forecastWeatherExternalDto = (ForecastWeatherExternalDto) entry.getValue();
-                String location = entry.getKey();
+            String location = entry.getKey();
+            ExternalDto externalDto = entry.getValue();
+            if (externalDto instanceof ForecastWeatherExternalDto){
+                ForecastWeatherExternalDto forecastWeatherExternalDto = (ForecastWeatherExternalDto) externalDto;
                 WeatherFetchLocationModel weatherFetchLocationModel;
                 weatherFetchLocationModel =
                         weatherFetchLocationMapper.mapToModel(
@@ -63,7 +64,7 @@ public class WeatherDataTransformationService {
             }
             else {
                 WeatherFetchLocationModel weatherFetchLocationModel =
-                        getErrorWeatherModel((ErrorExternalDto) entry.getValue(), entry.getKey());
+                        getErrorWeatherModel((ErrorExternalDto) externalDto, location);
                 weatherFetchLocationModels.add(weatherFetchLocationModel);
             }
         }
